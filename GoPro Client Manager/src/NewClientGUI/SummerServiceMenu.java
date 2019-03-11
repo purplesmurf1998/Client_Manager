@@ -33,33 +33,39 @@ public class SummerServiceMenu extends GridPane{
     /*************************
      * SERVICES VARIABLES
      *************************/
-    private final ToggleButton lawnBtn = new ToggleButton("Lawn ($)");
-    private final ToggleButton springBtn = new ToggleButton("Spring ($)");
-    private final ToggleButton fallBtn = new ToggleButton("Fall ($)");
-    private final ToggleButton weedBtn = new ToggleButton("Weeds ($)");
-    private final ToggleButton areationBtn = new ToggleButton("Aeration ($)");
-    private final ToggleButton spiderBtn = new ToggleButton("Spider ($)");
-    private final ToggleButton flowerbedBtn = new ToggleButton("Flowerbed (Hr)");
-    private final ToggleButton hedgeBtn = new ToggleButton("Hedge (Hr)");
-    private final ToggleButton fertilizerBtn = new ToggleButton("Fertilizer ($)");
-    private final ToggleButton wormsBtn = new ToggleButton("Worms ($)");
-    private final ToggleButton soilBtn = new ToggleButton("Soil (Yd)");
+    private final ToggleButton lawnBtn = new ToggleButton("Lawn");
+    private final ToggleButton springBtn = new ToggleButton("Spring");
+    private final ToggleButton fallBtn = new ToggleButton("Fall");
+    private final ToggleButton weedTreatmentBtn = new ToggleButton("Weed Treatment");
+    private final ToggleButton aerationSpringBtn = new ToggleButton("Aeration Spring");
+    private final ToggleButton aerationFallBtn = new ToggleButton("Aeration Fall");
+    private final ToggleButton spiderBtn = new ToggleButton("Spider");
+    private final ToggleButton weedingBtn = new ToggleButton("Weeding");
+    private final ToggleButton hedgesBtn = new ToggleButton("Hedges");
+    private final ToggleButton fertilizerBtn = new ToggleButton("Fertilizer");
+    private final ToggleButton wormsBtn = new ToggleButton("Worms");
+    private final ToggleButton soilBtn = new ToggleButton("Soil");
+    private final ToggleButton seedingBtn = new ToggleButton("Seeding");
     
-    private final ToggleButton[] btnList = {lawnBtn, springBtn, fallBtn, weedBtn, areationBtn, spiderBtn, flowerbedBtn, hedgeBtn, fertilizerBtn, wormsBtn, soilBtn};
+    private final ToggleButton[] btnList = {lawnBtn, springBtn, fallBtn, weedTreatmentBtn, aerationSpringBtn, aerationFallBtn, 
+        spiderBtn, weedingBtn, hedgesBtn, fertilizerBtn, wormsBtn, soilBtn, seedingBtn};
     
     private final TextField lawnFld = new TextField();
     private final TextField springFld = new TextField();
     private final TextField fallFld = new TextField();
-    private final TextField weedFld = new TextField();
-    private final TextField areationFld = new TextField();
+    private final TextField weedTreatmentFld = new TextField();
+    private final TextField aerationSpringFld = new TextField();
+    private final TextField aerationFallFld = new TextField();
     private final TextField spiderFld = new TextField();
-    private final TextField flowerbedFld = new TextField();
-    private final TextField hedgeFld = new TextField();
+    private final TextField weedingFld = new TextField();
+    private final TextField hedgesFld = new TextField();
     private final TextField fertilizerFld = new TextField();
     private final TextField wormsFld = new TextField();
     private final TextField soilFld = new TextField();
+    private final TextField seedingFld = new TextField();
     
-    private final TextField[] fldList = {lawnFld, springFld, fallFld, weedFld, areationFld, spiderFld, flowerbedFld, hedgeFld, fertilizerFld, wormsFld, soilFld};
+    private final TextField[] fldList = {lawnFld, springFld, fallFld, weedTreatmentFld, aerationSpringFld, aerationFallFld, 
+        spiderFld, weedingFld, hedgesFld, fertilizerFld, wormsFld, soilFld, seedingFld};
     
     private final Button commentBtn = new Button("Comments");
     
@@ -79,14 +85,16 @@ public class SummerServiceMenu extends GridPane{
     private double lawn = 0;
     private double spring = 0;
     private double fall = 0;
-    private double weed = 0;
-    private double areation = 0;
+    private double weedTreatment = 0;
+    private double aerationSpring = 0;
+    private double aerationFall = 0;
     private double spider = 0;
-    private double flowerbed = 0;
-    private double hedge = 0;
+    private double weeding = 0;
+    private double hedges = 0;
     private double fertilizer = 0;
     private double worms = 0;
     private double soil = 0;
+    private double seeding = 0;
     
     private final Alert errorAlert = new Alert(Alert.AlertType.ERROR);
     
@@ -99,56 +107,60 @@ public class SummerServiceMenu extends GridPane{
     private void setUpPane(){
         this.setPadding(new Insets(10, 10, 10, 10));
         this.setAlignment(Pos.CENTER);
-        this.setVgap(15);
+        this.setVgap(10);
         this.setHgap(30);
         
         this.add(this.lawnBtn, 0, 0);
         this.add(this.springBtn, 0, 1);
         this.add(this.fallBtn, 0, 2);
-        this.add(this.weedBtn, 0, 3);
-        this.add(this.areationBtn, 0, 4);
-        this.add(this.spiderBtn, 0, 5);
-        this.add(this.flowerbedBtn, 2, 0);
-        this.add(this.hedgeBtn, 2, 1);
-        this.add(this.fertilizerBtn, 2, 2);
-        this.add(this.wormsBtn, 2, 3);
-        this.add(this.soilBtn, 2, 4);
+        this.add(this.weedTreatmentBtn, 0, 3);
+        this.add(this.aerationSpringBtn, 0, 4);
+        this.add(this.aerationFallBtn, 0, 5);
+        this.add(this.spiderBtn, 0, 6);
+        this.add(this.weedingBtn, 0, 7);
+        this.add(this.hedgesBtn, 2, 0);
+        this.add(this.fertilizerBtn, 2, 1);
+        this.add(this.wormsBtn, 2, 2);
+        this.add(this.soilBtn, 2, 3);
+        this.add(this.seedingBtn, 2, 4);
         
         this.add(this.lawnFld, 1, 0);
         this.add(this.springFld, 1, 1);
         this.add(this.fallFld, 1, 2);
-        this.add(this.weedFld, 1, 3);
-        this.add(this.areationFld, 1, 4);
-        this.add(this.spiderFld, 1, 5);
-        this.add(this.flowerbedFld, 3, 0);
-        this.add(this.hedgeFld, 3, 1);
-        this.add(this.fertilizerFld, 3, 2);
-        this.add(this.wormsFld, 3, 3);
-        this.add(this.soilFld, 3, 4);
+        this.add(this.weedTreatmentFld, 1, 3);
+        this.add(this.aerationSpringFld, 1, 4);
+        this.add(this.aerationFallFld, 1, 5);
+        this.add(this.spiderFld, 1, 6);
+        this.add(this.weedingFld, 1, 7);
+        this.add(this.hedgesFld, 4, 0);
+        this.add(this.fertilizerFld, 4, 1);
+        this.add(this.wormsFld, 4, 2);
+        this.add(this.soilFld, 4, 3);
+        this.add(this.seedingFld, 4, 4);
         
-        this.add(this.totalPane, 3, 5);
-        this.add(this.commentBtn, 3, 6);
+        this.add(this.totalPane, 2, 6);
+        this.add(this.commentBtn, 2, 7);
         
         setUpTotalPane();
         
         
         for (int i = 0; i < btnList.length; i++){
-            btnList[i].setMinSize(175, 50);
-            btnList[i].setMaxSize(175, 50);
-            btnList[i].setFont(Font.font("Rockwell", 18));
+            btnList[i].setMinSize(200, 30);
+            btnList[i].setMaxSize(200, 30);
+            btnList[i].setFont(Font.font("Rockwell"));
             btnList[i].setFocusTraversable(false);
         }
        
         for (int i = 0; i < fldList.length; i++){
             fldList[i].setMinSize(80, 30);
             fldList[i].setMaxSize(80, 30);
-            fldList[i].setFont(Font.font("Rockwell", 12));
+            fldList[i].setFont(Font.font("Rockwell"));
             fldList[i].setEditable(false);
             fldList[i].setFocusTraversable(false);
            
         }
         
-        this.totalText.setFont(Font.font("Rockwell", 23));
+        this.totalText.setFont(Font.font("Rockwell"));
         this.taxBtn.setSelected(true);
         
         setUpButtons();
@@ -162,7 +174,8 @@ public class SummerServiceMenu extends GridPane{
     }
     
     private void updateTotals(){
-        this.total = this.lawn + this.spring + this.fall + this.weed + this.areation + this.spider + this.flowerbed + this.hedge + this.fertilizer + this.worms + this.soil;
+        this.total = this.lawn + this.spring + this.fall + this.weedTreatment + this.aerationSpring + this.aerationFall + 
+                this.spider + this.weeding + this.hedges + this.fertilizer + this.worms + this.soil + this.seeding;
         if (this.taxBtn.isSelected())
             this.total = this.total * this.taxCst;
         
@@ -245,37 +258,55 @@ public class SummerServiceMenu extends GridPane{
             
         });
         
-        this.weedBtn.setOnAction(e -> {
-            if (this.weedBtn.isSelected()){
-                this.weedFld.setEditable(true);
-                this.weedFld.requestFocus();
-                this.weedFld.setText("65");
-                this.weedFld.selectAll();
-                this.weed = 65;
+        this.weedTreatmentBtn.setOnAction(e -> {
+            if (this.weedTreatmentBtn.isSelected()){
+                this.weedTreatmentFld.setEditable(true);
+                this.weedTreatmentFld.requestFocus();
+                this.weedTreatmentFld.setText("65");
+                this.weedTreatmentFld.selectAll();
+                this.weedTreatment = 65;
                 this.updateTotals();
             }
             else{
-                this.weedFld.setText("");
-                this.weedFld.setEditable(false);
-                this.weed = 0;
+                this.weedTreatmentFld.setText("");
+                this.weedTreatmentFld.setEditable(false);
+                this.weedTreatment = 0;
                 this.updateTotals();
             }
             
         });
         
-        this.areationBtn.setOnAction(e -> {
-            if (this.areationBtn.isSelected()){
-                this.areationFld.setEditable(true);
-                this.areationFld.requestFocus();
-                this.areationFld.setText("65");
-                this.areationFld.selectAll();
-                this.areation = 65;
+        this.aerationSpringBtn.setOnAction(e -> {
+            if (this.aerationSpringBtn.isSelected()){
+                this.aerationSpringFld.setEditable(true);
+                this.aerationSpringFld.requestFocus();
+                this.aerationSpringFld.setText("65");
+                this.aerationSpringFld.selectAll();
+                this.aerationSpring = 65;
                 this.updateTotals();
             }
             else{
-                this.areationFld.setText("");
-                this.areationFld.setEditable(false);
-                this.areation = 0;
+                this.aerationSpringFld.setText("");
+                this.aerationSpringFld.setEditable(false);
+                this.aerationSpring = 0;
+                this.updateTotals();
+            }
+            
+        });
+        
+        this.aerationFallBtn.setOnAction(e -> {
+            if (this.aerationFallBtn.isSelected()){
+                this.aerationFallFld.setEditable(true);
+                this.aerationFallFld.requestFocus();
+                this.aerationFallFld.setText("65");
+                this.aerationFallFld.selectAll();
+                this.aerationFall = 65;
+                this.updateTotals();
+            }
+            else{
+                this.aerationFallFld.setText("");
+                this.aerationFallFld.setEditable(false);
+                this.aerationFall = 0;
                 this.updateTotals();
             }
             
@@ -299,35 +330,35 @@ public class SummerServiceMenu extends GridPane{
             
         });
         
-        this.flowerbedBtn.setOnAction(e -> {
-            if (this.flowerbedBtn.isSelected()){
-                this.flowerbedFld.setEditable(true);
-                this.flowerbedFld.requestFocus();
-                this.flowerbedFld.setText("0");
-                this.flowerbedFld.selectAll();
+        this.weedingBtn.setOnAction(e -> {
+            if (this.weedingBtn.isSelected()){
+                this.weedingFld.setEditable(true);
+                this.weedingFld.requestFocus();
+                this.weedingFld.setText("0");
+                this.weedingFld.selectAll();
                 this.updateTotals();
             }
             else{
-                this.flowerbedFld.setText("");
-                this.flowerbedFld.setEditable(false);
-                this.flowerbed = 0;
+                this.weedingFld.setText("");
+                this.weedingFld.setEditable(false);
+                this.weeding = 0;
                 this.updateTotals();
             }
             
         });
         
-        this.hedgeBtn.setOnAction(e -> {
-            if (this.hedgeBtn.isSelected()){
-                this.hedgeFld.setEditable(true);
-                this.hedgeFld.requestFocus();
-                this.hedgeFld.setText("0");
-                this.hedgeFld.selectAll();
+        this.hedgesBtn.setOnAction(e -> {
+            if (this.hedgesBtn.isSelected()){
+                this.hedgesFld.setEditable(true);
+                this.hedgesFld.requestFocus();
+                this.hedgesFld.setText("0");
+                this.hedgesFld.selectAll();
                 this.updateTotals();
             }
             else{
-                this.hedgeFld.setText("");
-                this.hedgeFld.setEditable(false);
-                this.hedge = 0;
+                this.hedgesFld.setText("");
+                this.hedgesFld.setEditable(false);
+                this.hedges = 0;
                 this.updateTotals();
             }
             
@@ -381,6 +412,23 @@ public class SummerServiceMenu extends GridPane{
                 this.soilFld.setText("");
                 this.soilFld.setEditable(false);
                 this.soil = 0;
+                this.updateTotals();
+            }
+            
+        });
+        
+        this.seedingBtn.setOnAction(e -> {
+            if (this.seedingBtn.isSelected()){
+                this.seedingFld.setEditable(true);
+                this.seedingFld.requestFocus();
+                this.seedingFld.setText("0");
+                this.seedingFld.selectAll();
+                this.updateTotals();
+            }
+            else{
+                this.seedingFld.setText("");
+                this.seedingFld.setEditable(false);
+                this.seeding = 0;
                 this.updateTotals();
             }
             
@@ -452,10 +500,10 @@ public class SummerServiceMenu extends GridPane{
             }
         });
         
-        this.weedFld.setOnKeyReleased(e -> {
-            if (this.weedFld.isEditable() && this.weedFld.getText().length() > 0){    
+        this.weedTreatmentFld.setOnKeyReleased(e -> {
+            if (this.weedTreatmentFld.isEditable() && this.weedTreatmentFld.getText().length() > 0){    
                 try {
-                    this.weed = Double.parseDouble(this.weedFld.getText());
+                    this.weedTreatment = Double.parseDouble(this.weedTreatmentFld.getText());
                     this.updateTotals();
                 }catch(NumberFormatException ex){
                     this.errorAlert.setTitle("Weed Field Error");
@@ -465,16 +513,16 @@ public class SummerServiceMenu extends GridPane{
                     this.errorAlert.show();
                 }    
             }
-            else if (this.weedFld.isEditable() && this.weedFld.getText().length() == 0){
-                this.weed = 0;
+            else if (this.weedTreatmentFld.isEditable() && this.weedTreatmentFld.getText().length() == 0){
+                this.weedTreatment = 0;
                 this.updateTotals();
             }
         });
         
-        this.areationFld.setOnKeyReleased(e -> {
-            if (this.areationFld.isEditable() && this.areationFld.getText().length() > 0){    
+        this.aerationSpringFld.setOnKeyReleased(e -> {
+            if (this.aerationSpringFld.isEditable() && this.aerationSpringFld.getText().length() > 0){    
                 try {
-                    this.areation = Double.parseDouble(this.areationFld.getText());
+                    this.aerationSpring = Double.parseDouble(this.aerationSpringFld.getText());
                     this.updateTotals();
                 }catch(NumberFormatException ex){
                     this.errorAlert.setTitle("Areation Field Error");
@@ -484,8 +532,27 @@ public class SummerServiceMenu extends GridPane{
                     this.errorAlert.show();
                 }    
             }
-            else if (this.areationFld.isEditable() && this.areationFld.getText().length() == 0){
-                this.areation = 0;
+            else if (this.aerationSpringFld.isEditable() && this.aerationSpringFld.getText().length() == 0){
+                this.aerationSpring = 0;
+                this.updateTotals();
+            }
+        });
+        
+        this.aerationFallFld.setOnKeyReleased(e -> {
+            if (this.aerationFallFld.isEditable() && this.aerationFallFld.getText().length() > 0){    
+                try {
+                    this.aerationFall = Double.parseDouble(this.aerationFallFld.getText());
+                    this.updateTotals();
+                }catch(NumberFormatException ex){
+                    this.errorAlert.setTitle("Areation Field Error");
+                    this.errorAlert.setHeaderText("Input error in text field for 'Areation' service");
+                    this.errorAlert.setContentText("Hint: There should be no symbols or characters for price\n"
+                            + "Only input numbers and decimal point if needed.");
+                    this.errorAlert.show();
+                }    
+            }
+            else if (this.aerationFallFld.isEditable() && this.aerationFallFld.getText().length() == 0){
+                this.aerationFall = 0;
                 this.updateTotals();
             }
         });
@@ -509,11 +576,10 @@ public class SummerServiceMenu extends GridPane{
             }
         });
         
-        this.flowerbedFld.setOnKeyReleased(e -> {
-            if (this.flowerbedFld.isEditable() && this.flowerbedFld.getText().length() > 0){    
+        this.weedingFld.setOnKeyReleased(e -> {
+            if (this.weedingFld.isEditable() && this.weedingFld.getText().length() > 0){    
                 try {
-                    double hours = Double.parseDouble(this.flowerbedFld.getText());
-                    this.flowerbed = 45 * hours;
+                    this.weeding = Double.parseDouble(this.weedingFld.getText());
                     this.updateTotals();
                 }catch(NumberFormatException ex){
                     this.errorAlert.setTitle("Flowerbed Field Error");
@@ -523,17 +589,16 @@ public class SummerServiceMenu extends GridPane{
                     this.errorAlert.show();
                 }    
             }
-            else if (this.flowerbedFld.isEditable() && this.flowerbedFld.getText().length() == 0){
-                this.flowerbed = 0;
+            else if (this.weedingFld.isEditable() && this.weedingFld.getText().length() == 0){
+                this.weeding = 0;
                 this.updateTotals();
             }
         });
         
-        this.hedgeFld.setOnKeyReleased(e -> {
-            if (this.hedgeFld.isEditable() && this.hedgeFld.getText().length() > 0){    
+        this.hedgesFld.setOnKeyReleased(e -> {
+            if (this.hedgesFld.isEditable() && this.hedgesFld.getText().length() > 0){    
                 try {
-                    double hours = Double.parseDouble(this.hedgeFld.getText());
-                    this.hedge = 40 * hours;
+                    this.hedges = Double.parseDouble(this.hedgesFld.getText());
                     this.updateTotals();
                 }catch(NumberFormatException ex){
                     this.errorAlert.setTitle("Hedge Field Error");
@@ -543,8 +608,8 @@ public class SummerServiceMenu extends GridPane{
                     this.errorAlert.show();
                 }    
             }
-            else if (this.hedgeFld.isEditable() && this.hedgeFld.getText().length() == 0){
-                this.hedge = 0;
+            else if (this.hedgesFld.isEditable() && this.hedgesFld.getText().length() == 0){
+                this.hedges = 0;
                 this.updateTotals();
             }
         });
@@ -590,8 +655,7 @@ public class SummerServiceMenu extends GridPane{
         this.soilFld.setOnKeyReleased(e -> {
             if (this.soilFld.isEditable() && this.soilFld.getText().length() > 0){    
                 try {
-                    double yards = Double.parseDouble(this.soilFld.getText());
-                    this.soil = (40 * yards) + (80 * yards);
+                    this.soil = Double.parseDouble(this.soilFld.getText());
                     this.updateTotals();
                 }catch(NumberFormatException ex){
                     this.errorAlert.setTitle("Soil Field Error");
@@ -603,6 +667,25 @@ public class SummerServiceMenu extends GridPane{
             }
             else if (this.soilFld.isEditable() && this.soilFld.getText().length() == 0){
                 this.soil = 0;
+                this.updateTotals();
+            }
+        });
+        
+        this.seedingFld.setOnKeyReleased(e -> {
+            if (this.seedingFld.isEditable() && this.seedingFld.getText().length() > 0){    
+                try {
+                    this.seeding = Double.parseDouble(this.seedingFld.getText());
+                    this.updateTotals();
+                }catch(NumberFormatException ex){
+                    this.errorAlert.setTitle("Soil Field Error");
+                    this.errorAlert.setHeaderText("Input error in text field for 'Soil' service");
+                    this.errorAlert.setContentText("Hint: There should be no symbols or characters for price\n"
+                            + "Only input numbers and decimal point if needed.");
+                    this.errorAlert.show();
+                }    
+            }
+            else if (this.seedingFld.isEditable() && this.seedingFld.getText().length() == 0){
+                this.seeding = 0;
                 this.updateTotals();
             }
         });
@@ -621,20 +704,23 @@ public class SummerServiceMenu extends GridPane{
     public double getFall(){
         return this.fall;
     }
-    public double getWeed(){
-        return this.weed;
+    public double getWeedTreatment(){
+        return this.weedTreatment;
     }
-    public double getAreation(){
-        return this.areation;
+    public double getAerationSpring(){
+        return this.aerationSpring;
+    }
+    public double getAerationFall(){
+        return this.aerationFall;
     }
     public double getSpider(){
         return this.spider;
     }
-    public double getFlowerbed(){
-        return this.flowerbed;
+    public double getWeeding(){
+        return this.weeding;
     }
-    public double getHedge(){
-        return this.hedge;
+    public double getHedges(){
+        return this.hedges;
     }
     public double getFertilizer(){
         return this.fertilizer;
@@ -644,6 +730,9 @@ public class SummerServiceMenu extends GridPane{
     }
     public double getSoil(){
         return this.soil;
+    }
+    public double getSeeding(){
+        return this.seeding;
     }
     public String getComment(){
         return this.comment;
