@@ -32,7 +32,7 @@ import javafx.stage.Stage;
  *
  * @author purplesmurf
  */
-public class InformationMenu extends Stage{
+public class WinterInformationMenu extends Stage{
     
     private Connection conn;
     private String seasonId;
@@ -78,17 +78,14 @@ public class InformationMenu extends Stage{
     
     private final Button saveBtn = new Button("Save");
     
-    private boolean winterCommentShown = false;//false = service comments, true = payment comments
-    
-    public InformationMenu(Connection conn, String seasonId, int clientId){
+    public WinterInformationMenu(Connection conn, String seasonId, int clientId){
         this.conn = conn;
         this.seasonId = seasonId;
         this.clientId = clientId;
         
-        if (this.seasonId.charAt(0) == 'W')
-            setUpWinter();
-        else if (this.seasonId.charAt(0) == 'S')
-            setUpSummer();
+        
+        setUpWinter();
+        
     }
     
     private void setUpWinter(){
@@ -231,10 +228,6 @@ public class InformationMenu extends Stage{
         });
         
         this.setScene(this.scene);
-    }
-    
-    private void setUpSummer(){
-        
     }
     
     private void getWinterInfo(){

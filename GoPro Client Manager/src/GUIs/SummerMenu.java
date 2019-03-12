@@ -5,13 +5,21 @@
  */
 package GUIs;
 
-import InformationGUI.InformationMenu;
+import InformationGUI.SummerInformationMenu;
 import NewClientGUI.NewClientMenu;
 import Objects.Client;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -30,6 +38,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  *
@@ -42,7 +51,7 @@ public class SummerMenu extends BorderPane{
     private NewClientMenu newClientMenu;
     private SummerPaymentMenu paymentMenu;
     private SummerFilterMenu filterMenu;
-    private InformationMenu clientMenu;
+    private SummerInformationMenu clientMenu;
     
     /***********************
      AVAILABLE OPTIONS
@@ -106,7 +115,7 @@ public class SummerMenu extends BorderPane{
     
     private boolean filterActive = false;
     
-    
+    ArrayList<Stage> informationList = new ArrayList<>();
     
     public SummerMenu(){
         
@@ -246,6 +255,25 @@ public class SummerMenu extends BorderPane{
             }
         });
         
+        this.printBtn.setOnAction(e -> {
+            try {
+                PrintWriter writer = new PrintWriter(new FileOutputStream("Summer_Client_List.txt"));
+                for (int i = 0; i < this.tableList.size(); i++){
+                    writer.println(this.tableList.get(i).getAddress().getText() + " " + this.tableList.get(i).getCity() + "\n" + this.tableList.get(i).getComment().getText() + "\n");
+                    
+                }
+                System.out.println("Addresses printed");
+                writer.close();
+                
+                File file = new File("Summer_Client_List.txt");
+                Desktop desktop = Desktop.getDesktop();
+                desktop.open(file);
+                
+            } catch (IOException ex) {
+                Logger.getLogger(WinterMenu.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+        });
+        
     }
     
     private void setCenterTable(){
@@ -295,18 +323,25 @@ public class SummerMenu extends BorderPane{
         
         this.table.setItems(this.tableList);
         
-        /*
         this.table.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2){
-                TablePosition pos = this.table.getSelectionModel().getSelectedCells().get(0);
-                int row = pos.getRow();
-                Client client = this.table.getItems().get(row);
+                try {
+                    TablePosition pos = this.table.getSelectionModel().getSelectedCells().get(0);
+                    int row = pos.getRow();
+                    Client client = this.table.getItems().get(row);
                 
-                this.clientMenu = new InformationMenu(this.conn, this.seasonId, client.getId());
-                this.clientMenu.show();
+                    SummerInformationMenu menu = new SummerInformationMenu(this.conn, this.seasonId, client.getId());
+                    this.informationList.add(menu);
+                    final int index = this.informationList.size() - 1;
+                    menu.setOnCloseRequest(ex -> {
+                       this.informationList.remove(index);
+                    });
+                    menu.show();
+                }catch (IndexOutOfBoundsException ex){
+                    System.out.println("Double clicked on no client");
+                }
             }
         });
-        */
     }
     
     private void setBtnAction(){

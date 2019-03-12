@@ -5,12 +5,13 @@
  */
 package GUIs;
 
-import InformationGUI.InformationMenu;
+import InformationGUI.WinterInformationMenu;
 import NewClientGUI.NewClientMenu;
 import Objects.Client;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -310,7 +311,7 @@ public class WinterMenu extends BorderPane{
                     int row = pos.getRow();
                     Client client = this.table.getItems().get(row);
                 
-                    InformationMenu menu = new InformationMenu(this.conn, this.seasonId, client.getId());
+                    WinterInformationMenu menu = new WinterInformationMenu(this.conn, this.seasonId, client.getId());
                     this.informationList.add(menu);
                     final int index = this.informationList.size() - 1;
                     menu.setOnCloseRequest(ex -> {
@@ -385,7 +386,7 @@ public class WinterMenu extends BorderPane{
         
         this.printBtn.setOnAction(e -> {
             try {
-                PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
+                PrintWriter writer = new PrintWriter(new FileOutputStream("Winter_Client_List.txt"));
                 for (int i = 0; i < this.tableList.size(); i++){
                     writer.println(this.tableList.get(i).getAddress().getText() + " " + this.tableList.get(i).getCity() + "\n" + this.tableList.get(i).getComment().getText() + "\n");
                     
@@ -393,7 +394,7 @@ public class WinterMenu extends BorderPane{
                 System.out.println("Addresses printed");
                 writer.close();
                 
-                File file = new File("the-file-name.txt");
+                File file = new File("Winter_Client_List.txt");
                 Desktop desktop = Desktop.getDesktop();
                 desktop.open(file);
                 
