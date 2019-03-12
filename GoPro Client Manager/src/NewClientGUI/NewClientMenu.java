@@ -182,8 +182,8 @@ public class NewClientMenu extends Stage{
                     else if (seasonId.charAt(0) == 'S'){
                         //switch to summer payment
                         this.mainPane.setCenter(this.summerPaymentMenu);
-                        //this.summerPaymentMenu.refreshPane();
-                        //this.summerPaymentMenu.setTotal(this.summerServiceMenu.getTotal());
+                        this.summerPaymentMenu.refreshPane();
+                        this.summerPaymentMenu.setTotal(this.summerServiceMenu.getTotal());
                         
                     }
                     this.nextBtn.setText("Save");
@@ -215,9 +215,16 @@ public class NewClientMenu extends Stage{
                     
                 }
                 else {//switch to services page
-                    this.centerPaneCounter--;
-                    this.mainPane.setCenter(this.winterServiceMenu);
-                    this.nextBtn.setText("Next");
+                    if (seasonId.charAt(0) == 'W'){
+                        this.centerPaneCounter--;
+                        this.mainPane.setCenter(this.winterServiceMenu);
+                        this.nextBtn.setText("Next");
+                    }
+                    else if (seasonId.charAt(0) == 'S'){
+                        this.centerPaneCounter--;
+                        this.mainPane.setCenter(this.summerServiceMenu);
+                        this.nextBtn.setText("Next");
+                    }
                 }
                 
             }break;
