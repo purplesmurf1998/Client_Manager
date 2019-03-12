@@ -36,6 +36,7 @@ public class NewClientMenu extends Stage{
     private String seasonId;
     private boolean batchAdd;//specified if clients are added as batch or individually
     private WinterMenu winterMenu;
+    private SummerMenu summerMenu;
     private int id;
     
     private int centerPaneCounter = 0;
@@ -91,7 +92,7 @@ public class NewClientMenu extends Stage{
         this.conn = conn;
         this.seasonId = seasonId;
         this.batchAdd = batchAdd;
-        this.winterMenu = winterMenu;
+        this.summerMenu = summerMenu;
         
         setUpTopPane();
         
@@ -164,8 +165,14 @@ public class NewClientMenu extends Stage{
                     this.backBtn.setText("Back");
                 }
                 else{//close add new client page
-                    this.winterMenu.setAddingNewClient(false);
-                    this.close();
+                    if (seasonId.charAt(0) == 'W'){
+                        this.winterMenu.setAddingNewClient(false);
+                        this.close();
+                    }
+                    else if (seasonId.charAt(0) == 'S'){
+                        this.summerMenu.setAddingNewClient(false);
+                        this.close();
+                    }
                 }
                 
             }break;
@@ -212,6 +219,8 @@ public class NewClientMenu extends Stage{
                     //Get All Information
                     if (seasonId.charAt(0) == 'W')
                         updateWinter();
+                    else if (seasonId.charAt(0) == 'S')
+                        updateSummer();
                     
                 }
                 else {//switch to services page
@@ -302,6 +311,104 @@ public class NewClientMenu extends Stage{
             
         }
     }
+    private void updateSummer(){
+        double lawn = this.summerServiceMenu.getLawn();
+        double spring = this.summerServiceMenu.getSpring();
+        double fall = this.summerServiceMenu.getFall();
+        double weedTreatment = this.summerServiceMenu.getWeedTreatment();
+        double aerationSpring = this.summerServiceMenu.getAerationSpring();
+        double aerationFall = this.summerServiceMenu.getAerationFall();
+        double spider = this.summerServiceMenu.getSpider();
+        double weeding = this.summerServiceMenu.getWeeding();
+        double hedges = this.summerServiceMenu.getHedges();
+        double fertilizer = this.summerServiceMenu.getFertilizer();
+        double worms = this.summerServiceMenu.getWorms();
+        double soil = this.summerServiceMenu.getSoil();
+        double seeding = this.summerServiceMenu.getSeeding();
+        String serviceComment = this.summerServiceMenu.getComment();
+        String season_id = this.id + this.seasonId;
+        
+        int plan = this.summerPaymentMenu.getPlan();
+        int mar = this.summerPaymentMenu.getMar();
+        int apr = this.summerPaymentMenu.getApr();
+        int may = this.summerPaymentMenu.getMay();
+        int jun = this.summerPaymentMenu.getJun();
+        int jul = this.summerPaymentMenu.getJul();
+        int aug = this.summerPaymentMenu.getAug();
+        int sep = this.summerPaymentMenu.getSep();
+        int oct = this.summerPaymentMenu.getOct();
+        int method = this.summerPaymentMenu.getMethod();
+        double total = this.summerPaymentMenu.getTotal();
+        String paymentComment = this.summerPaymentMenu.getComments();
+        double save = this.summerPaymentMenu.getSave();
+        
+        try {
+            
+            Statement st = this.conn.createStatement();
+            
+            String update;
+            
+            for (int i = 0; i < serviceComment.length(); i++){
+                if (serviceComment.charAt(i) == '\''){
+                    serviceComment = serviceComment.substring(0, i) + "'" + serviceComment.substring(i, serviceComment.length());
+                    i++;
+                }
+            }
+            
+            for (int i = 0; i < paymentComment.length(); i++){
+                if (paymentComment.charAt(i) == '\''){
+                    paymentComment = paymentComment.substring(0, i) + "'" + paymentComment.substring(i, paymentComment.length());
+                    i++;
+                }
+            }
+            
+            if (save > 0) {
+                paymentComment += "\t--Client saved " + save + "%";
+            }
+            
+            //Update summer services
+            update = "INSERT INTO summer_services "
+                    + "VALUES (" + this.id + ", '" + this.seasonId + "', " 
+                    + lawn + ", " + spring + ", " + fall + ", " + weedTreatment + ", " 
+                    + aerationSpring + ", " + aerationFall + ", " + spider + ", "  + weeding + ", "  + hedges + ", " 
+                    + fertilizer + ", " + worms + ", "  + soil + ", "  + seeding + ", "    
+                    + total + ", '" + serviceComment + "', '" + season_id.toUpperCase() + "')";
+            System.out.println(update);
+            
+            st.executeUpdate(update);
+            
+            //update summer payment
+            update = "INSERT INTO summer_payment "
+                    + "VALUES (" + this.id + ", '" + this.seasonId + "', " + total + ", " + plan + ", " 
+                    + mar + ", " + apr + ", " + may + ", " + jun + ", " + jul + ", " + aug + ", " + sep + ", " + oct + ", "
+                    + method + ", '" + paymentComment + "')";
+            System.out.println(update);
+            
+            st.executeUpdate(update);
+            this.errorDontSave = false;
+        }
+        catch (SQLException ex){
+            this.errorDontSave = true;
+            System.out.println(ex.getMessage());
+            
+            this.saveAlert.setTitle("Client Error");
+            this.saveAlert.setHeaderText("Client already registered.");
+            this.saveAlert.setContentText("This client has already been registered for the \n"
+                    + "season " + this.seasonId + ". Modify or choose new client.");
+            this.saveAlert.show();
+        }
+        
+        if (!this.errorDontSave){
+            if (this.batchAdd)
+                this.summerMenu.addNewClient(true);
+            else
+                this.summerMenu.setAddingNewClient(false);
+            
+            this.summerMenu.refreshTable();
+            this.close();
+            
+        }
+    }
     private void updateWinter(){
                     
         double single = this.winterServiceMenu.getSingle();
@@ -355,7 +462,7 @@ public class NewClientMenu extends Stage{
             //update winter payment
             update = "INSERT INTO winter_payment "
                     + "VALUES (" + this.id + ", '" + this.seasonId + "', " + total + ", " + plan + ", " 
-                    + oct + ", " + nov + ", " + dec + ", " + jan + ", " + feb + ", '" + method + "', '" + paymentComment + "')";
+                    + oct + ", " + nov + ", " + dec + ", " + jan + ", " + feb + ", " + method + ", '" + paymentComment + "')";
             System.out.println(update);
             
             st.executeUpdate(update);

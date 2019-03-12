@@ -579,5 +579,61 @@ public class SummerPaymentMenu extends GridPane{
         this.planText.setText("");
     }
     
+    /*
+    private int mar = 0;
+    private int apr = 0;
+    private int may = 0;
+    private int jun = 0;
+    private int jul = 0;
+    private int aug = 0;
+    private int sep = 0;
+    private int oct = 0;
+    private String comment = "";
+    private double initialTotal = 0;
+    private double finalTotal = 0;
+    private int plan = 0;
+    private int method = 0;
+    private double save = 0;
+    */
+    
+    public int getMar(){
+        return this.mar;
+    }
+    public int getApr(){
+        return this.apr;
+    }
+    public int getMay(){
+        return this.may;
+    }
+    public int getJun(){
+        return this.jun;
+    }
+    public int getJul(){
+        return this.jul;
+    }
+    public int getAug(){
+        return this.aug;
+    }
+    public int getSep(){
+        return this.sep;
+    }
+    public int getOct(){
+        return this.oct;
+    }
+    public String getComments(){
+        return this.comment;
+    }
+    public double getTotal(){
+        return this.finalTotal;
+    }
+    public int getPlan(){
+        return this.plan;
+    }
+    public int getMethod(){
+        return this.method;
+    }
+    public double getSave(){
+        return this.save;
+    }
     
 }

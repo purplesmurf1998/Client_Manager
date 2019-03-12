@@ -387,7 +387,7 @@ public class WinterMenu extends BorderPane{
             try {
                 PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
                 for (int i = 0; i < this.tableList.size(); i++){
-                    writer.println(this.tableList.get(i).getAddress().getText() + ", " + this.tableList.get(i).getCity());
+                    writer.println(this.tableList.get(i).getAddress().getText() + " " + this.tableList.get(i).getCity() + "\n" + this.tableList.get(i).getComment().getText() + "\n");
                     
                 }
                 System.out.println("Addresses printed");

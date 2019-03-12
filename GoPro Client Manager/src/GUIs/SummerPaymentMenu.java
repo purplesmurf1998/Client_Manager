@@ -435,11 +435,17 @@ public class SummerPaymentMenu extends Stage{
             
             
             Statement st = this.conn.createStatement();
-            String query = "select client_information.address, client_information.name, "
+            String //                                     1                         2
+                    query = "select client_information.address, client_information.name, "
+                    //                  3                     4
                     + "summer_payment.total, summer_payment.plan, "
+                    //                 5                   6                   7                   8                   9
                     + "summer_payment.mar, summer_payment.apr, summer_payment.may, summer_payment.jun, summer_payment.jul, "
+                    //                 10                  11                  12
                     + "summer_payment.aug, summer_payment.sep, summer_payment.oct, "
+                    //                  13                       14                    15
                     + "summer_payment.method, client_information.id, summer_payment.comments "
+                    
                     + "from summer_payment inner join client_information "
                     + "on summer_payment.id = client_information.id and summer_payment.season = '" + this.seasonId + "' "
                     + "order by client_information.address asc";
@@ -449,7 +455,7 @@ public class SummerPaymentMenu extends Stage{
             resetTotals();
             while (rs.next()){
                 
-                this.clientList.add(new Payment(rs.getInt(11), rs.getString(1), rs.getString(2), rs.getInt(10), rs.getDouble(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getString(12)));
+                this.clientList.add(new Payment(rs.getInt(14), rs.getString(1), rs.getString(2), rs.getInt(13), rs.getDouble(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getInt(11), rs.getInt(12), rs.getString(15)));
                 
                 if (rs.getInt(5) == 1 || rs.getInt(5) == 2){
                     this.marTotal += (rs.getDouble(3) / rs.getInt(4));
@@ -585,11 +591,11 @@ public class SummerPaymentMenu extends Stage{
                     this.table.getSelectionModel().select(row, mayCol);
                 }
                 else if (col.equals(juneCol)){
-                    updatePayment(payment.getId(), "june");
+                    updatePayment(payment.getId(), "jun");
                     this.table.getSelectionModel().select(row, juneCol);
                 }
                 else if (col.equals(julyCol)){
-                    updatePayment(payment.getId(), "july");
+                    updatePayment(payment.getId(), "jul");
                     this.table.getSelectionModel().select(row, julyCol);
                 }
                 else if (col.equals(augustCol)){
