@@ -52,19 +52,19 @@ public class Payment {
         this.commentText.setText("");
         
         this.oct.setText(String.format("%.2f", octSub) + " / " + String.format("%.2f", oct));
-        this.oct.setFont(Font.font("Gotham"));
+        //this.oct.setFont(Font.font("Gotham"));
         
         this.nov.setText(String.format("%.2f", novSub) + " / " + String.format("%.2f", nov));
-        this.nov.setFont(Font.font("Gotham"));
+        //this.nov.setFont(Font.font("Gotham"));
         
         this.dec.setText(String.format("%.2f", decSub) + " / " + String.format("%.2f", dec));
-        this.dec.setFont(Font.font("Gotham"));
+        //this.dec.setFont(Font.font("Gotham"));
         
         this.jan.setText(String.format("%.2f", janSub) + " / " + String.format("%.2f", jan));
-        this.jan.setFont(Font.font("Gotham"));
+        //this.jan.setFont(Font.font("Gotham"));
         
         this.feb.setText(String.format("%.2f", febSub) + " / " + String.format("%.2f", feb));
-        this.feb.setFont(Font.font("Gotham"));
+        //this.feb.setFont(Font.font("Gotham"));
     }
     
     public Payment(double mar, double apr, double may, double jun, double jul, double aug, double sep, double oct, double marSub, double aprSub, double maySub, double junSub, double julSub, double augSub, double sepSub, double octSub){
@@ -75,28 +75,28 @@ public class Payment {
         this.commentText.setText("");
         
         this.mar.setText(String.format("%.2f", marSub) + " / " + String.format("%.2f", mar));
-        this.mar.setFont(Font.font("Gotham"));
+        //this.mar.setFont(Font.font("Gotham"));
         
         this.apr.setText(String.format("%.2f", aprSub) + " / " + String.format("%.2f", apr));
-        this.apr.setFont(Font.font("Gotham"));
+        //this.apr.setFont(Font.font("Gotham"));
         
         this.may.setText(String.format("%.2f", maySub) + " / " + String.format("%.2f", may));
-        this.may.setFont(Font.font("Gotham"));
+        //this.may.setFont(Font.font("Gotham"));
         
         this.jun.setText(String.format("%.2f", junSub) + " / " + String.format("%.2f", jun));
-        this.jun.setFont(Font.font("Gotham"));
+        //this.jun.setFont(Font.font("Gotham"));
         
         this.jul.setText(String.format("%.2f", julSub) + " / " + String.format("%.2f", jul));
-        this.jul.setFont(Font.font("Gotham"));
+        //this.jul.setFont(Font.font("Gotham"));
         
         this.aug.setText(String.format("%.2f", augSub) + " / " + String.format("%.2f", aug));
-        this.aug.setFont(Font.font("Gotham"));
+        //this.aug.setFont(Font.font("Gotham"));
         
         this.sep.setText(String.format("%.2f", sepSub) + " / " + String.format("%.2f", sep));
-        this.sep.setFont(Font.font("Gotham"));
+        //this.sep.setFont(Font.font("Gotham"));
         
         this.oct.setText(String.format("%.2f", octSub) + " / " + String.format("%.2f", oct));
-        this.oct.setFont(Font.font("Gotham"));
+        //this.oct.setFont(Font.font("Gotham"));
         
     }
     
@@ -105,7 +105,7 @@ public class Payment {
         this.id = id;
         this.addressString = address;
         this.nameString = name;
-        this.commentText.setFont(Font.font("Gotham"));
+        //this.commentText.setFont(Font.font("Gotham"));
         this.comment = comment;
         if (comment.length() > 0)
             this.commentText.setText("Comment");
@@ -126,16 +126,16 @@ public class Payment {
             }break;
             case 1: {
                 this.mar.setText("$" + String.format("%.2f", (total / plan)));
-                this.mar.setFont(Font.font("Gotham"));
+                //this.mar.setFont(Font.font("Gotham"));
                 this.mar.setFill(Color.RED);
             }break;
             case 2: {
                 this.mar.setText("$" + String.format("%.2f", (total / plan)));
-                this.mar.setFont(Font.font("Gotham"));
+                //this.mar.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.mar.setText("$" + String.format("%.2f", (total / plan)));
-                this.mar.setFont(Font.font("Gotham"));
+                //this.mar.setFont(Font.font("Gotham"));
                 this.mar.setFill(Color.GREEN);
             }break;
         }
@@ -146,16 +146,16 @@ public class Payment {
             }break;
             case 1: {
                 this.apr.setText("$" + String.format("%.2f", (total / plan)));
-                this.apr.setFont(Font.font("Gotham"));
+                //this.apr.setFont(Font.font("Gotham"));
                 this.apr.setFill(Color.RED);
             }break;
             case 2: {
                 this.apr.setText("$" + String.format("%.2f", (total / plan)));
-                this.apr.setFont(Font.font("Gotham"));
+                //this.apr.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.apr.setText("$" + String.format("%.2f", (total / plan)));
-                this.apr.setFont(Font.font("Gotham"));
+                //this.apr.setFont(Font.font("Gotham"));
                 this.apr.setFill(Color.GREEN);
             }break;
         }
@@ -166,16 +166,16 @@ public class Payment {
             }break;
             case 1: {
                 this.may.setText("$" + String.format("%.2f", (total / plan)));
-                this.may.setFont(Font.font("Gotham"));
+                //this.may.setFont(Font.font("Gotham"));
                 this.may.setFill(Color.RED);
             }break;
             case 2: {
                 this.may.setText("$" + String.format("%.2f", (total / plan)));
-                this.may.setFont(Font.font("Gotham"));
+                //this.may.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.may.setText("$" + String.format("%.2f", (total / plan)));
-                this.may.setFont(Font.font("Gotham"));
+                //this.may.setFont(Font.font("Gotham"));
                 this.may.setFill(Color.GREEN);
             }break;
         }
@@ -186,16 +186,16 @@ public class Payment {
             }break;
             case 1: {
                 this.jun.setText("$" + String.format("%.2f", (total / plan)));
-                this.jun.setFont(Font.font("Gotham"));
+                //this.jun.setFont(Font.font("Gotham"));
                 this.jun.setFill(Color.RED);
             }break;
             case 2: {
                 this.jun.setText("$" + String.format("%.2f", (total / plan)));
-                this.jun.setFont(Font.font("Gotham"));
+                //this.jun.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.jun.setText("$" + String.format("%.2f", (total / plan)));
-                this.jun.setFont(Font.font("Gotham"));
+                //this.jun.setFont(Font.font("Gotham"));
                 this.jun.setFill(Color.GREEN);
             }break;
         }
@@ -206,16 +206,16 @@ public class Payment {
             }break;
             case 1: {
                 this.jul.setText("$" + String.format("%.2f", (total / plan)));
-                this.jul.setFont(Font.font("Gotham"));
+                //this.jul.setFont(Font.font("Gotham"));
                 this.jul.setFill(Color.RED);
             }break;
             case 2: {
                 this.jul.setText("$" + String.format("%.2f", (total / plan)));
-                this.jul.setFont(Font.font("Gotham"));
+                //this.jul.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.jul.setText("$" + String.format("%.2f", (total / plan)));
-                this.jul.setFont(Font.font("Gotham"));
+                //this.jul.setFont(Font.font("Gotham"));
                 this.jul.setFill(Color.GREEN);
             }break;
         }
@@ -226,16 +226,16 @@ public class Payment {
             }break;
             case 1: {
                 this.aug.setText("$" + String.format("%.2f", (total / plan)));
-                this.aug.setFont(Font.font("Gotham"));
+                //this.aug.setFont(Font.font("Gotham"));
                 this.aug.setFill(Color.RED);
             }break;
             case 2: {
                 this.aug.setText("$" + String.format("%.2f", (total / plan)));
-                this.aug.setFont(Font.font("Gotham"));
+                //this.aug.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.aug.setText("$" + String.format("%.2f", (total / plan)));
-                this.aug.setFont(Font.font("Gotham"));
+                //this.aug.setFont(Font.font("Gotham"));
                 this.aug.setFill(Color.GREEN);
             }break;
         }
@@ -246,16 +246,16 @@ public class Payment {
             }break;
             case 1: {
                 this.sep.setText("$" + String.format("%.2f", (total / plan)));
-                this.sep.setFont(Font.font("Gotham"));
+                //this.sep.setFont(Font.font("Gotham"));
                 this.sep.setFill(Color.RED);
             }break;
             case 2: {
                 this.sep.setText("$" + String.format("%.2f", (total / plan)));
-                this.sep.setFont(Font.font("Gotham"));
+                //this.sep.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.sep.setText("$" + String.format("%.2f", (total / plan)));
-                this.sep.setFont(Font.font("Gotham"));
+                //this.sep.setFont(Font.font("Gotham"));
                 this.sep.setFill(Color.GREEN);
             }break;
         }
@@ -266,16 +266,16 @@ public class Payment {
             }break;
             case 1: {
                 this.oct.setText("$" + String.format("%.2f", (total / plan)));
-                this.oct.setFont(Font.font("Gotham"));
+                //this.oct.setFont(Font.font("Gotham"));
                 this.oct.setFill(Color.RED);
             }break;
             case 2: {
                 this.oct.setText("$" + String.format("%.2f", (total / plan)));
-                this.oct.setFont(Font.font("Gotham"));
+                //this.oct.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.oct.setText("$" + String.format("%.2f", (total / plan)));
-                this.oct.setFont(Font.font("Gotham"));
+                //this.oct.setFont(Font.font("Gotham"));
                 this.oct.setFill(Color.GREEN);
             }break;
         }
@@ -285,7 +285,7 @@ public class Payment {
         this.id = id;
         this.addressString = address;
         this.nameString = name;
-        this.commentText.setFont(Font.font("Gotham"));
+        //this.commentText.setFont(Font.font("Gotham"));
         this.comment = comment;
         if (comment.length() > 0)
             this.commentText.setText("Comment");
@@ -306,16 +306,16 @@ public class Payment {
             }break;
             case 1: {
                 this.oct.setText("$" + String.format("%.2f", (total / plan)));
-                this.oct.setFont(Font.font("Gotham"));
+                //this.oct.setFont(Font.font("Gotham"));
                 this.oct.setFill(Color.RED);
             }break;
             case 2: {
                 this.oct.setText("$" + String.format("%.2f", (total / plan)));
-                this.oct.setFont(Font.font("Gotham"));
+                //this.oct.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.oct.setText("$" + String.format("%.2f", (total / plan)));
-                this.oct.setFont(Font.font("Gotham"));
+                //this.oct.setFont(Font.font("Gotham"));
                 this.oct.setFill(Color.GREEN);
             }break;
         }
@@ -326,16 +326,16 @@ public class Payment {
             }break;
             case 1: {
                 this.nov.setText("$" + String.format("%.2f", (total / plan)));
-                this.nov.setFont(Font.font("Gotham"));
+                //this.nov.setFont(Font.font("Gotham"));
                 this.nov.setFill(Color.RED);
             }break;
             case 2: {
                 this.nov.setText("$" + String.format("%.2f", (total / plan)));
-                this.nov.setFont(Font.font("Gotham"));
+                //this.nov.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.nov.setText("$" + String.format("%.2f", (total / plan)));
-                this.nov.setFont(Font.font("Gotham"));
+                //this.nov.setFont(Font.font("Gotham"));
                 this.nov.setFill(Color.GREEN);
             }break;
         }
@@ -346,16 +346,16 @@ public class Payment {
             }break;
             case 1: {
                 this.dec.setText("$" + String.format("%.2f", (total / plan)));
-                this.dec.setFont(Font.font("Gotham"));
+                //this.dec.setFont(Font.font("Gotham"));
                 this.dec.setFill(Color.RED);
             }break;
             case 2: {
                 this.dec.setText("$" + String.format("%.2f", (total / plan)));
-                this.dec.setFont(Font.font("Gotham"));
+                //this.dec.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.dec.setText("$" + String.format("%.2f", (total / plan)));
-                this.dec.setFont(Font.font("Gotham"));
+                //this.dec.setFont(Font.font("Gotham"));
                 this.dec.setFill(Color.GREEN);
             }break;
         }
@@ -366,16 +366,16 @@ public class Payment {
             }break;
             case 1: {
                 this.jan.setText("$" + String.format("%.2f", (total / plan)));
-                this.jan.setFont(Font.font("Gotham"));
+                //this.jan.setFont(Font.font("Gotham"));
                 this.jan.setFill(Color.RED);
             }break;
             case 2: {
                 this.jan.setText("$" + String.format("%.2f", (total / plan)));
-                this.jan.setFont(Font.font("Gotham"));
+                //this.jan.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.jan.setText("$" + String.format("%.2f", (total / plan)));
-                this.jan.setFont(Font.font("Gotham"));
+                //this.jan.setFont(Font.font("Gotham"));
                 this.jan.setFill(Color.GREEN);
             }break;
         }
@@ -386,16 +386,16 @@ public class Payment {
             }break;
             case 1: {
                 this.feb.setText("$" + String.format("%.2f", (total / plan)));
-                this.feb.setFont(Font.font("Gotham"));
+                //this.feb.setFont(Font.font("Gotham"));
                 this.feb.setFill(Color.RED);
             }break;
             case 2: {
                 this.feb.setText("$" + String.format("%.2f", (total / plan)));
-                this.feb.setFont(Font.font("Gotham"));
+                //this.feb.setFont(Font.font("Gotham"));
             }break;
             case 3: {
                 this.feb.setText("$" + String.format("%.2f", (total / plan)));
-                this.feb.setFont(Font.font("Gotham"));
+                //this.feb.setFont(Font.font("Gotham"));
                 this.feb.setFill(Color.GREEN);
             }break;
         }

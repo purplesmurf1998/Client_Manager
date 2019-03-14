@@ -36,14 +36,14 @@ public class Client {
         this.total.setText("$" + String.format("%.2f", total));
         this.phone.setText(phone);
         this.comment.setText(comment);
-        
+        /*
         this.address.setFont(Font.font("Gotham"));
         this.status.setFont(Font.font("Gotham"));
         this.name.setFont(Font.font("Gotham"));
         this.total.setFont(Font.font("Gotham"));
         this.phone.setFont(Font.font("Gotham"));
         this.comment.setFont(Font.font("Gotham"));
-        
+        */
     }
     
     //Set methods
