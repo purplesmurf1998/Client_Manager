@@ -5,6 +5,7 @@
  */
 package InformationGUI;
 
+import GUIs.SummerMenu;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +21,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -32,6 +35,7 @@ public class SummerInformationMenu extends Stage{
     private Connection conn;
     private String seasonId;
     private int clientId;
+    private SummerMenu summerMenu;
     
     private BorderPane pane = new BorderPane();
     private HBox topPane = new HBox();
@@ -83,10 +87,11 @@ public class SummerInformationMenu extends Stage{
     
     private final Button saveBtn = new Button("Save");
     
-    public SummerInformationMenu(Connection conn, String seasonId, int clientId){
+    public SummerInformationMenu(Connection conn, String seasonId, int clientId, SummerMenu summerMenu){
         this.conn = conn;
         this.seasonId = seasonId;
         this.clientId = clientId;
+        this.summerMenu = summerMenu;
         
         try {
             setUpSummer();
@@ -316,8 +321,77 @@ public class SummerInformationMenu extends Stage{
         paymentCommentText.setMinSize(200, 100);
         paymentCommentText.setMaxSize(200, 100);
         
+        this.bottomPane.setPadding(this.insets);
+        this.bottomPane.setAlignment(Pos.CENTER_RIGHT);
+        
+        this.bottomPane.getChildren().add(this.saveBtn);
+        
+        this.topPane.setPadding(this.insets);
+        this.topPane.setAlignment(Pos.CENTER);
+        this.topPane.getChildren().add(addressText);
+        addressText.setFont(Font.font("Rockwell", FontWeight.BOLD, 23));
+        
+        this.saveBtn.setOnAction(e -> {
+            this.name = nameText.getText();
+            this.city = cityText.getText();
+            this.phone = phoneText.getText();
+            this.email = emailText.getText();
+            
+            this.paymentComment = paymentCommentText.getText();
+            this.serviceComment = serviceCommentText.getText();
+            
+            saveSummerInfo();
+            this.close();
+        });
         
         this.setScene(this.scene);
+    }
+    
+    private void saveSummerInfo(){
+        try {
+            
+            Statement st = this.conn.createStatement();
+            
+            
+            String update = "update client_information "
+                    + "set (name, city, phone, email) "
+                    + "= ('" + this.name + "', '" + this.city + "', '" + this.phone + "', '" + this.email + "') "
+                    + "where id = " + this.clientId;
+            
+            st.executeUpdate(update);
+            
+            for (int i = 0; i < this.paymentComment.length(); i++){
+                if (this.paymentComment.charAt(i) == '\''){
+                    this.paymentComment = this.paymentComment.substring(0, i) + "'" + this.paymentComment.substring(i, this.paymentComment.length());
+                    i++;
+                }
+            }
+            
+            for (int i = 0; i < this.serviceComment.length(); i++){
+                if (this.serviceComment.charAt(i) == '\''){
+                    this.serviceComment = this.serviceComment.substring(0, i) + "'" + this.serviceComment.substring(i, this.serviceComment.length());
+                    i++;
+                }
+            }
+            
+            update = "update summer_services "
+                    + "set comments = '" + this.serviceComment + "' "
+                    + "where id = " + this.clientId + " and season = '" + this.seasonId + "'";
+            
+            st.executeUpdate(update);
+            
+            update = "update summer_payment "
+                    + "set comments = '" + this.paymentComment + "' "
+                    + "where id = " + this.clientId + " and season = '" + this.seasonId + "'";
+            
+            st.executeUpdate(update);
+            
+            st.close();
+            this.summerMenu.refreshTable();
+        }
+        catch (SQLException ex){
+            System.out.println(ex.getMessage());
+        }
     }
     
 }
