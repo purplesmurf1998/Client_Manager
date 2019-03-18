@@ -102,16 +102,19 @@ public class SummerMenu extends BorderPane{
      * VALUES FOR TABLE FILTER
      **************************/
     
-    private boolean all = true;
+    private boolean lawn = false;
     private boolean spring = false;
     private boolean fall = false;
-    private boolean weed = false;
-    private boolean aeration = false;
+    private boolean weedTreatment = false;
+    private boolean aerationSpring = false;
+    private boolean aerationFall = false;
     private boolean spiders = false;
-    private boolean hedge = false;
+    private boolean weeding = false;
+    private boolean hedges = false;
     private boolean fertilizer = false;
     private boolean worms = false;
     private boolean soil = false;
+    private boolean seeding = false;
     private int status = 0;//0 = all, 1 = residential, 2 = commercial
     
     private String searchQuery;
@@ -418,6 +421,19 @@ public class SummerMenu extends BorderPane{
             }
             else
                 this.newClientMenu.requestFocus();
+        });
+        
+        this.filterBtn.setOnAction(e -> {
+            if (!this.filterActive){
+                this.filterActive = true;
+                this.filterMenu = new SummerFilterMenu(this.conn, this.seasonId, this.tableList, this.status, this.lawn, 
+                                                       this.spring, this.fall, this.weedTreatment, this.aerationSpring, this.aerationFall, 
+                                                       this.spiders, this.weeding, this.hedges, this.fertilizer, this.worms, this.soil, this.seeding);
+                this.filterMenu.show();
+            }
+            else {
+                this.filterMenu.requestFocus();
+            }
         });
         
     }

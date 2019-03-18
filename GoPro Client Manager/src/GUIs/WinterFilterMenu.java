@@ -120,9 +120,7 @@ public class WinterFilterMenu extends Stage{
         this.topPane.setSpacing(10);
         this.topPane.setAlignment(Pos.CENTER_LEFT);
         this.topPane.getChildren().add(this.filterString);
-        
-        this.filterString.setFont(Font.font("Gotham", 18));
-        
+         
         this.pane.setCenter(this.centerPane);
         
         this.centerPane.setPadding(new Insets(10, 10, 10, 10));

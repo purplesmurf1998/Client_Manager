@@ -369,7 +369,7 @@ public class WinterMenu extends BorderPane{
                     this.shovelSelected = this.filterMenu.getShovelSelected();
                     this.statusSelected = this.filterMenu.getStatusSelected();
                     this.saltSelected = this.filterMenu.getSaltSelected();
-                    setSearchQuery();
+                    updateSearchQuery();
                     this.searchBar.setText("");
                     this.filterMenu.filterList();
                     this.filterMenu.close();
@@ -404,7 +404,7 @@ public class WinterMenu extends BorderPane{
         });
         
     }
-    private void setSearchQuery(){
+    private void updateSearchQuery(){
         switch (this.serviceSelected){
                 case 0: {
                     //don't do anything...show all services
@@ -518,7 +518,7 @@ public class WinterMenu extends BorderPane{
     
     public void refreshTable(){
         resetSearchQuery();
-        setSearchQuery();
+        updateSearchQuery();
         
         this.tableList.clear();
         
