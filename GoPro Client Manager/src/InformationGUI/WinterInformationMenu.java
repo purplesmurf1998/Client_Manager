@@ -5,6 +5,7 @@
  */
 package InformationGUI;
 
+import GUIs.WinterMenu;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,6 +38,7 @@ public class WinterInformationMenu extends Stage{
     private Connection conn;
     private String seasonId;
     private int clientId;
+    private WinterMenu menu;
     
     private BorderPane pane = new BorderPane();
     private GridPane centerPane = new GridPane();
@@ -78,11 +80,11 @@ public class WinterInformationMenu extends Stage{
     
     private final Button saveBtn = new Button("Save");
     
-    public WinterInformationMenu(Connection conn, String seasonId, int clientId){
+    public WinterInformationMenu(Connection conn, String seasonId, int clientId, WinterMenu menu){
         this.conn = conn;
         this.seasonId = seasonId;
         this.clientId = clientId;
-        
+        this.menu = menu;
         
         setUpWinter();
         
@@ -297,7 +299,7 @@ public class WinterInformationMenu extends Stage{
             
             String update = "update client_information "
                     + "set (name, city, phone, email) "
-                    + "= ('" + this.name + "', '" + this.city + "', '" + this.phone + "', '" + this.email + "') "
+                    + "= ('" + this.name.toUpperCase() + "', '" + this.city.toUpperCase() + "', '" + this.phone + "', '" + this.email.toUpperCase() + "') "
                     + "where id = " + this.clientId;
             
             st.executeUpdate(update);
@@ -329,6 +331,8 @@ public class WinterInformationMenu extends Stage{
             st.executeUpdate(update);
             
             st.close();
+            
+            this.menu.refreshTable();
             
         }catch (SQLException ex){
             System.out.println(ex.getMessage());

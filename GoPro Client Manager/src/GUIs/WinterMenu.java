@@ -30,6 +30,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
@@ -37,6 +39,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -115,6 +118,9 @@ public class WinterMenu extends BorderPane{
     
     ArrayList<Stage> informationList = new ArrayList<>();
     
+    private ContextMenu deleteMenu = new ContextMenu();
+    private MenuItem deleteClientBtn = new MenuItem("Delete");
+    
     public WinterMenu(){
         
     }
@@ -122,7 +128,9 @@ public class WinterMenu extends BorderPane{
     public WinterMenu(Connection conn, String seasonId){
         this.conn = conn;
         this.seasonId = seasonId;
-        //this.newClientMenu = newClientMenu;
+        
+        this.deleteMenu.getItems().add(this.deleteClientBtn);
+        this.deleteMenu.setAutoHide(true);
         
         this.searchQuery = "select winter_services.id, client_information.address, client_information.status, "
                     + "client_information.name, winter_services.total, client_information.phone, "
@@ -305,13 +313,14 @@ public class WinterMenu extends BorderPane{
         this.table.setItems(this.tableList);
         
         this.table.setOnMouseClicked(e -> {
+            this.deleteMenu.hide();
             if (e.getClickCount() == 2){
                 try {
                     TablePosition pos = this.table.getSelectionModel().getSelectedCells().get(0);
                     int row = pos.getRow();
                     Client client = this.table.getItems().get(row);
                 
-                    WinterInformationMenu menu = new WinterInformationMenu(this.conn, this.seasonId, client.getId());
+                    WinterInformationMenu menu = new WinterInformationMenu(this.conn, this.seasonId, client.getId(), this);
                     this.informationList.add(menu);
                     final int index = this.informationList.size() - 1;
                     menu.setOnCloseRequest(ex -> {
@@ -322,7 +331,42 @@ public class WinterMenu extends BorderPane{
                     System.out.println("Double clicked on no client");
                 }
             }
+            else if (e.getButton() == MouseButton.SECONDARY){
+                try {    
+                    TablePosition pos = this.table.getSelectionModel().getSelectedCells().get(0);
+                    int row = pos.getRow();
+                    Client client = this.table.getItems().get(row);
+                
+                    this.deleteMenu.show(this.table, e.getScreenX(), e.getScreenY());
+                    this.deleteMenu.requestFocus();
+                    this.deleteClientBtn.setOnAction(a -> {
+                        try {
+                            deleteClient(client);
+                        }catch (SQLException ex2){
+                            System.out.println(ex2.getMessage());
+                        }
+                    });
+                    
+                }catch (IndexOutOfBoundsException ex){
+                    System.out.println("Right clicked on no client");
+                }
+            }
         });
+    }
+    
+    private void deleteClient(Client client) throws SQLException{
+        Statement st = this.conn.createStatement();
+        
+        String deleteString = "delete from winter_services where seasonid = '" + client.getId() + "" + this.seasonId + "'";
+        
+        st.executeUpdate(deleteString);
+        
+        deleteString = "delete from winter_payment where id = " + client.getId() + " and season = '" + this.seasonId + "'";
+        
+        st.executeUpdate(deleteString);
+        
+        st.close();
+        this.refreshTable();
     }
     
     private void setBtnAction(){
@@ -469,7 +513,8 @@ public class WinterMenu extends BorderPane{
                     + "client_information.name, winter_services.total, client_information.phone, "
                     + "winter_services.comments, client_information.city "
                     + "from winter_services inner join client_information "
-                    + "on winter_services.id = client_information.id and winter_services.season = '" + this.seasonId + "' ";
+                    + "on winter_services.id = client_information.id and winter_services.season = '" + this.seasonId + "' "
+                    + "order by client_information.address asc";
         
     }
     

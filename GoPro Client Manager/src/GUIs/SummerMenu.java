@@ -554,7 +554,8 @@ public class SummerMenu extends BorderPane{
                     + "client_information.name, summer_services.total, client_information.phone, "
                     + "summer_services.comments, client_information.city "
                     + "from summer_services inner join client_information "
-                    + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' ";
+                    + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' "
+                    + "order by client_information.address asc";
         
     }
     

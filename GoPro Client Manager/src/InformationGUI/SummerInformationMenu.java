@@ -355,7 +355,7 @@ public class SummerInformationMenu extends Stage{
             
             String update = "update client_information "
                     + "set (name, city, phone, email) "
-                    + "= ('" + this.name + "', '" + this.city + "', '" + this.phone + "', '" + this.email + "') "
+                    + "= ('" + this.name.toUpperCase() + "', '" + this.city.toUpperCase() + "', '" + this.phone + "', '" + this.email.toUpperCase() + "') "
                     + "where id = " + this.clientId;
             
             st.executeUpdate(update);
