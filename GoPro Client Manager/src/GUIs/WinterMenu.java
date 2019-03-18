@@ -365,11 +365,14 @@ public class WinterMenu extends BorderPane{
                 this.filterMenu.show();
                 
                 this.filterMenu.getSaveBtn().setOnAction(a -> {
+                    //updateFilterSettings()
                     this.serviceSelected = this.filterMenu.getServiceSelected();
                     this.shovelSelected = this.filterMenu.getShovelSelected();
                     this.statusSelected = this.filterMenu.getStatusSelected();
                     this.saltSelected = this.filterMenu.getSaltSelected();
+                    
                     updateSearchQuery();
+                    
                     this.searchBar.setText("");
                     this.filterMenu.filterList();
                     this.filterMenu.close();

@@ -423,18 +423,100 @@ public class SummerMenu extends BorderPane{
                 this.newClientMenu.requestFocus();
         });
         
-        this.filterBtn.setOnAction(e -> {
+        this.filterBtn.setOnAction(a -> {
             if (!this.filterActive){
                 this.filterActive = true;
                 this.filterMenu = new SummerFilterMenu(this.conn, this.seasonId, this.tableList, this.status, this.lawn, 
                                                        this.spring, this.fall, this.weedTreatment, this.aerationSpring, this.aerationFall, 
                                                        this.spiders, this.weeding, this.hedges, this.fertilizer, this.worms, this.soil, this.seeding);
                 this.filterMenu.show();
+                
+                this.filterMenu.getSaveBtn().setOnAction(b -> {
+                    updateFilterSettings();
+                    
+                    
+                    this.searchBar.setText("");
+                    this.filterMenu.filterList();
+                    this.filterMenu.close();
+                    this.filterActive = false;
+                    
+                });
             }
             else {
                 this.filterMenu.requestFocus();
             }
         });
+        
+    }
+    
+    private void updateFilterSettings(){
+        this.status = this.filterMenu.getStatus();
+        this.lawn = this.filterMenu.getLawn();
+        this.spring = this.filterMenu.getSpring();
+        this.fall = this.filterMenu.getFall();
+        this.weedTreatment = this.filterMenu.getWeedTreatment();
+        this.aerationSpring = this.filterMenu.getAerationSpring();
+        this.aerationFall = this.filterMenu.getAerationFall();
+        this.spiders = this.filterMenu.getSpider();
+        this.weeding = this.filterMenu.getWeeding();
+        this.hedges = this.filterMenu.getHedges();
+        this.fertilizer = this.filterMenu.getFertilizer();
+        this.worms = this.filterMenu.getWorms();
+        this.soil = this.filterMenu.getSoil();
+        this.seeding = this.filterMenu.getSeeding();
+    }
+    
+    private void updateQuery(){
+        switch (this.status){
+            case 0:{
+                //do nothing, want all clients
+            }break;
+            case 1:{//search for residential
+                this.searchQuery += "and client_information.status = 0 ";
+            }break;
+            case 2:{//serach for commercial
+                this.searchQuery += "and client_information.status = 1 ";
+            }break;
+        }
+        
+        if (this.lawn)
+            this.searchQuery += "and summer_services.lawn > 0 ";
+        
+        if (this.spring)
+            this.searchQuery += "and summer_services.spring > 0 ";
+        
+        if (this.fall)
+            this.searchQuery += "and summer_services.fall > 0 ";
+        
+        if (this.weedTreatment)
+            this.searchQuery += "and summer_services.weed_treatment > 0 ";
+        
+        if (this.aerationSpring)
+            this.searchQuery += "and summer_services.aeration_spring > 0 ";
+        
+        if (this.aerationFall)
+            this.searchQuery += "and summer_services.aeration_fall > 0 ";
+        
+        if (this.spiders)
+            this.searchQuery += "and summer_services.spider > 0 ";
+        
+        if (this.weeding)
+            this.searchQuery += "and summer_services.weeding > 0 ";
+        
+        if (this.hedges)
+            this.searchQuery += "and summer_services.hedges > 0 ";
+        
+        if (this.fertilizer)
+            this.searchQuery += "and summer_services.fertilizer > 0 ";
+        
+        if (this.worms)
+            this.searchQuery += "and summer_services.worms > 0 ";
+        
+        if (this.soil)
+            this.searchQuery += "and summer_services.soil > 0 ";
+        
+        if (this.seeding)
+            this.searchQuery += "and summer_services.seeding > 0 ";
         
     }
     
@@ -472,8 +554,7 @@ public class SummerMenu extends BorderPane{
                     + "client_information.name, summer_services.total, client_information.phone, "
                     + "summer_services.comments, client_information.city "
                     + "from summer_services inner join client_information "
-                    + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' "
-                    + "order by client_information.address asc";
+                    + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' ";
         
     }
     

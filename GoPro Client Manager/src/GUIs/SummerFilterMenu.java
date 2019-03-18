@@ -7,10 +7,14 @@ package GUIs;
 
 import Objects.Client;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
@@ -83,10 +87,10 @@ public class SummerFilterMenu extends Stage{
     
     private ToggleButton seedingBtn = new ToggleButton("Seeding");
     
-    private ToggleButton saveBtn = new ToggleButton("Save");
+    private Button saveBtn = new Button("Save");
     
     private ToggleButton[] btnList = {allClientsBtn, residentialBtn, commercialBtn, lawnBtn, springBtn, fallBtn, weedTreatmentBtn, aerationSpringBtn, 
-        aerationFallBtn, spiderBtn, weedingBtn, hedgesBtn, fertilizerBtn, wormsBtn, soilBtn, seedingBtn, saveBtn};
+        aerationFallBtn, spiderBtn, weedingBtn, hedgesBtn, fertilizerBtn, wormsBtn, soilBtn, seedingBtn};
     
     private ToggleGroup statusGroup = new ToggleGroup();
     
@@ -196,6 +200,10 @@ public class SummerFilterMenu extends Stage{
             this.btnList[i].setFocusTraversable(false);
         }
         
+        this.saveBtn.setMinWidth(100);
+        this.saveBtn.setMaxWidth(100);
+        this.saveBtn.setFocusTraversable(false);
+        
         this.residentialBtn.setToggleGroup(this.statusGroup);
         this.commercialBtn.setToggleGroup(this.statusGroup);
         this.allClientsBtn.setToggleGroup(this.statusGroup);
@@ -213,6 +221,10 @@ public class SummerFilterMenu extends Stage{
             }
             else{
                 this.allClientsBtn.setSelected(true);
+                
+                setServicesToFalse();
+                
+                updateFilterString();
             }
         });
         
@@ -224,6 +236,10 @@ public class SummerFilterMenu extends Stage{
             }
             else{
                 this.residentialBtn.setSelected(true);
+                
+                setServicesToFalse();
+                
+                updateFilterString();
             }
         });
         
@@ -235,6 +251,10 @@ public class SummerFilterMenu extends Stage{
             }
             else{
                 this.commercialBtn.setSelected(true);
+                
+                setServicesToFalse();
+                
+                updateFilterString();
             }
         });
         
@@ -409,6 +429,60 @@ public class SummerFilterMenu extends Stage{
         
     }
     
+    private void setServicesToFalse(){
+        this.lawn = false;
+        this.lawnBtn.setSelected(false);
+        this.lawnStr.setText("");
+                
+        this.spring = false;
+        this.springBtn.setSelected(false);
+        this.springStr.setText("");
+                
+        this.fall = false;
+        this.fallBtn.setSelected(false);
+        this.fallStr.setText("");
+                
+        this.weedTreatment = false;
+        this.weedTreatmentBtn.setSelected(false);
+        this.weedTreatmentStr.setText("");
+                
+        this.aerationSpring = false;
+        this.aerationSpringBtn.setSelected(false);
+        this.aerationSpringStr.setText("");
+                
+        this.spider = false;
+        this.spiderBtn.setSelected(false);
+        this.spiderStr.setText("");
+                
+        this.weeding = false;
+        this.weedingBtn.setSelected(false);
+        this.weedingStr.setText("");
+                
+        this.hedges = false;
+        this.hedgesBtn.setSelected(false);
+        this.hedgesStr.setText("");
+                
+        this.fertilizer = false;
+        this.fertilizerBtn.setSelected(false);
+        this.fertilizerStr.setText("");
+                
+        this.worms = false;
+        this.wormsBtn.setSelected(false);
+        this.wormsStr.setText("");
+                
+        this.soil = false;
+        this.soilBtn.setSelected(false);
+        this.soilStr.setText("");
+                
+        this.aerationFall = false;
+        this.aerationFallBtn.setSelected(false);
+        this.aerationFallStr.setText("");
+                
+        this.seeding = false;
+        this.seedingBtn.setSelected(false);
+        this.seedingStr.setText("");
+    }
+    
     private void setButtons(boolean[] serviceList){
         switch (this.status){
             case 0: {//All clients selected
@@ -462,5 +536,128 @@ public class SummerFilterMenu extends Stage{
                 + this.weedTreatmentStr.getText() + this.aerationSpringStr.getText() + this.aerationFallStr.getText() + this.spiderStr.getText() 
                 + this.weedingStr.getText() + this.hedgesStr.getText() + this.fertilizerStr.getText() + this.wormsStr.getText() 
                 + this.soilStr.getText() + this.seedingStr.getText());
+    }
+    
+    private void setQuery(){
+        
+        switch (this.status){
+            case 0:{
+                //do nothing, want all clients
+            }break;
+            case 1:{//search for residential
+                this.query += "and client_information.status = 0 ";
+            }break;
+            case 2:{//serach for commercial
+                this.query += "and client_information.status = 1 ";
+            }break;
+        }
+        
+        if (this.lawn)
+            this.query += "and summer_services.lawn > 0 ";
+        
+        if (this.spring)
+            this.query += "and summer_services.spring > 0 ";
+        
+        if (this.fall)
+            this.query += "and summer_services.fall > 0 ";
+        
+        if (this.weedTreatment)
+            this.query += "and summer_services.weed_treatment > 0 ";
+        
+        if (this.aerationSpring)
+            this.query += "and summer_services.aeration_spring > 0 ";
+        
+        if (this.aerationFall)
+            this.query += "and summer_services.aeration_fall > 0 ";
+        
+        if (this.spider)
+            this.query += "and summer_services.spider > 0 ";
+        
+        if (this.weeding)
+            this.query += "and summer_services.weeding > 0 ";
+        
+        if (this.hedges)
+            this.query += "and summer_services.hedges > 0 ";
+        
+        if (this.fertilizer)
+            this.query += "and summer_services.fertilizer > 0 ";
+        
+        if (this.worms)
+            this.query += "and summer_services.worms > 0 ";
+        
+        if (this.soil)
+            this.query += "and summer_services.soil > 0 ";
+        
+        if (this.seeding)
+            this.query += "and summer_services.seeding > 0 ";
+        
+        this.query += "order by client_information.address asc";
+            
+        System.out.println(query);
+    }
+    
+    public void filterList(){
+        try {
+            
+            Statement st = this.conn.createStatement();
+            setQuery();
+            ResultSet rs = st.executeQuery(this.query);
+            
+            
+            this.tableList.clear();
+            while (rs.next()){
+                this.tableList.add(new Client(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getDouble(5), rs.getString(6), rs.getString(7), rs.getString(8)));
+            }
+            
+        }
+        catch (SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    public int getStatus(){
+        return this.status;
+    }
+    public boolean getLawn(){
+        return this.lawn;
+    }
+    public boolean getSpring(){
+        return this.spring;
+    }
+    public boolean getFall(){
+        return this.fall;
+    }
+    public boolean getWeedTreatment(){
+        return this.weedTreatment;
+    }
+    public boolean getAerationSpring(){
+        return this.aerationSpring;
+    }
+    public boolean getAerationFall(){
+        return this.aerationFall;
+    }
+    public boolean getSpider(){
+        return this.spider;
+    }
+    public boolean getWeeding(){
+        return this.weeding;
+    }
+    public boolean getHedges(){
+        return this.hedges;
+    }
+    public boolean getFertilizer(){
+        return this.fertilizer;
+    }
+    public boolean getWorms(){
+        return this.worms;
+    }
+    public boolean getSoil(){
+        return this.soil;
+    }
+    public boolean getSeeding(){
+        return this.seeding;
+    }
+    public Button getSaveBtn(){
+        return this.saveBtn;
     }
 }
