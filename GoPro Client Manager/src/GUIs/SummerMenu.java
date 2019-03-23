@@ -220,7 +220,7 @@ public class SummerMenu extends BorderPane{
                     }
                     
                     this.searchQuery += "and client_information.address LIKE '" + search + "%' ";
-                    this.searchQuery += "order by client_information.address asc";
+                    this.searchQuery += "order by client_information.address asc ";
                     
                     System.out.println(this.searchQuery);
                     
@@ -250,7 +250,7 @@ public class SummerMenu extends BorderPane{
                     }
                     
                     this.searchQuery += "and client_information.name LIKE '" + search + "%' ";
-                    this.searchQuery += "order by client_information.address asc";
+                    this.searchQuery += "order by client_information.address asc ";
                     
                     ResultSet rs = st.executeQuery(this.searchQuery);
                     this.tableList.clear();
@@ -434,6 +434,7 @@ public class SummerMenu extends BorderPane{
                 this.filterMenu.getSaveBtn().setOnAction(b -> {
                     updateFilterSettings();
                     
+                    updateQuery();
                     
                     this.searchBar.setText("");
                     this.filterMenu.filterList();
@@ -554,8 +555,8 @@ public class SummerMenu extends BorderPane{
                     + "client_information.name, summer_services.total, client_information.phone, "
                     + "summer_services.comments, client_information.city "
                     + "from summer_services inner join client_information "
-                    + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' "
-                    + "order by client_information.address asc";
+                    + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' ";
+                    //+ "order by client_information.address asc";
         
     }
     
