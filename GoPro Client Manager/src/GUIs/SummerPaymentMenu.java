@@ -76,6 +76,7 @@ public class SummerPaymentMenu extends Stage{
     private double augTotal = 0;
     private double sepTotal = 0;
     private double octTotal = 0;
+    private double total = 0;
     
     private double marSubTotal = 0;
     private double aprSubTotal = 0;
@@ -287,6 +288,8 @@ public class SummerPaymentMenu extends Stage{
                 
                 this.clientList.add(new Payment(rs.getInt(14), rs.getString(1), rs.getString(2), rs.getInt(13), rs.getDouble(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getInt(11), rs.getInt(12), rs.getString(15)));
                 
+                this.total += rs.getDouble(3);
+                
                 //mar
                 if (rs.getInt(5) == 1 || rs.getInt(5) == 2){
                     this.marTotal += (rs.getDouble(3) / rs.getInt(4));
@@ -363,7 +366,7 @@ public class SummerPaymentMenu extends Stage{
             
             
             this.clientList.add(new Payment());
-            this.clientList.add(new Payment(this.marTotal, this.aprTotal, this.mayTotal, this.junTotal, this.julTotal, this.augTotal, this.sepTotal, this.octTotal, 
+            this.clientList.add(new Payment(this.total, this.marTotal, this.aprTotal, this.mayTotal, this.junTotal, this.julTotal, this.augTotal, this.sepTotal, this.octTotal, 
                     this.marSubTotal, this.aprSubTotal, this.maySubTotal, this.junSubTotal, this.julSubTotal, this.augSubTotal, this.sepSubTotal, this.octSubTotal));
             
             resetQuery();
@@ -457,6 +460,8 @@ public class SummerPaymentMenu extends Stage{
                 
                 this.clientList.add(new Payment(rs.getInt(14), rs.getString(1), rs.getString(2), rs.getInt(13), rs.getDouble(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getInt(11), rs.getInt(12), rs.getString(15)));
                 
+                this.total += rs.getDouble(3);
+                
                 if (rs.getInt(5) == 1 || rs.getInt(5) == 2){
                     this.marTotal += (rs.getDouble(3) / rs.getInt(4));
                 }
@@ -523,7 +528,7 @@ public class SummerPaymentMenu extends Stage{
                 
             }
             this.clientList.add(new Payment());
-            this.clientList.add(new Payment(this.marTotal, this.aprTotal, this.mayTotal, this.junTotal, this.julTotal, this.augTotal, this.sepTotal, this.octTotal, 
+            this.clientList.add(new Payment(this.total, this.marTotal, this.aprTotal, this.mayTotal, this.junTotal, this.julTotal, this.augTotal, this.sepTotal, this.octTotal, 
                     this.marSubTotal, this.aprSubTotal, this.maySubTotal, this.junSubTotal, this.julSubTotal, this.augSubTotal, this.sepSubTotal, this.octSubTotal));
             
             
@@ -663,6 +668,7 @@ public class SummerPaymentMenu extends Stage{
         this.augTotal = 0;
         this.sepTotal = 0;
         this.octTotal = 0;
+        this.total = 0;
         
         this.marSubTotal = 0;
         this.aprSubTotal = 0;

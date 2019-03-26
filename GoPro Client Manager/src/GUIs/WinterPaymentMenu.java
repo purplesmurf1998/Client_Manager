@@ -77,6 +77,7 @@ public class WinterPaymentMenu extends Stage{
     private double decTotal = 0;
     private double janTotal = 0;
     private double febTotal = 0;
+    private double total = 0;
     
     private double octSubTotal = 0;
     private double novSubTotal = 0;
@@ -280,6 +281,8 @@ public class WinterPaymentMenu extends Stage{
                 
                 this.clientList.add(new Payment(rs.getInt(11), rs.getString(1), rs.getString(2), rs.getInt(10), rs.getDouble(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getString(12)));
                 
+                this.total += rs.getDouble(3);
+                
                 if (rs.getInt(5) == 1 || rs.getInt(5) == 2){
                     this.octTotal += (rs.getDouble(3) / rs.getInt(4));
                 }
@@ -324,7 +327,7 @@ public class WinterPaymentMenu extends Stage{
             
             
             this.clientList.add(new Payment());
-            this.clientList.add(new Payment(this.octTotal, this.novTotal, this.decTotal, this.janTotal, this.febTotal, 
+            this.clientList.add(new Payment(this.total, this.octTotal, this.novTotal, this.decTotal, this.janTotal, this.febTotal, 
                     this.octSubTotal, this.novSubTotal, this.decSubTotal, this.janSubTotal, this.febSubTotal));
             
             resetQuery();
@@ -333,14 +336,6 @@ public class WinterPaymentMenu extends Stage{
         catch (SQLException ex){
             
         }
-    }
-    
-    private void setTotal(){
-        this.clientList.remove(this.clientList.size() - 1);
-        
-        this.clientList.add(new Payment(this.octTotal, this.novTotal, this.decTotal, this.janTotal, this.febTotal, 
-            this.octSubTotal, this.novSubTotal, this.decSubTotal, this.janSubTotal, this.febSubTotal));
-            
     }
     
     private void setUpTable(){
@@ -407,6 +402,8 @@ public class WinterPaymentMenu extends Stage{
                 
                 this.clientList.add(new Payment(rs.getInt(11), rs.getString(1), rs.getString(2), rs.getInt(10), rs.getDouble(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getString(12)));
                 
+                this.total += rs.getDouble(3);
+                
                 if (rs.getInt(5) == 1 || rs.getInt(5) == 2){
                     this.octTotal += (rs.getDouble(3) / rs.getInt(4));
                 }
@@ -449,7 +446,7 @@ public class WinterPaymentMenu extends Stage{
                 
             }
             this.clientList.add(new Payment());
-            this.clientList.add(new Payment(this.octTotal, this.novTotal, this.decTotal, this.janTotal, this.febTotal, 
+            this.clientList.add(new Payment(this.total, this.octTotal, this.novTotal, this.decTotal, this.janTotal, this.febTotal, 
                     this.octSubTotal, this.novSubTotal, this.decSubTotal, this.janSubTotal, this.febSubTotal));
             
             
@@ -567,6 +564,7 @@ public class WinterPaymentMenu extends Stage{
         this.decTotal = 0;
         this.janTotal = 0;
         this.febTotal = 0;
+        this.total = 0;
         
         this.octSubTotal = 0;
         this.novSubTotal = 0;

@@ -44,12 +44,13 @@ public class Payment {
         this.totalString = "";
         this.comment = "";
     }
-    public Payment(double oct, double nov, double dec, double jan, double feb, double octSub, double novSub, double decSub, double janSub, double febSub){
+    public Payment(double total, double oct, double nov, double dec, double jan, double feb, double octSub, double novSub, double decSub, double janSub, double febSub){
         this.addressString = "";
         this.nameString = "TOTAL: ";
         this.methodString = "";
-        this.totalString = "";
         this.commentText.setText("");
+        
+        this.totalString = "$" + String.format("%.2f", total);
         
         this.oct.setText(String.format("%.2f", octSub) + " / " + String.format("%.2f", oct));
         //this.oct.setFont(Font.font("Gotham"));
@@ -67,12 +68,13 @@ public class Payment {
         //this.feb.setFont(Font.font("Gotham"));
     }
     
-    public Payment(double mar, double apr, double may, double jun, double jul, double aug, double sep, double oct, double marSub, double aprSub, double maySub, double junSub, double julSub, double augSub, double sepSub, double octSub){
+    public Payment(double total, double mar, double apr, double may, double jun, double jul, double aug, double sep, double oct, double marSub, double aprSub, double maySub, double junSub, double julSub, double augSub, double sepSub, double octSub){
         this.addressString = "";
         this.nameString = "TOTAL: ";
         this.methodString = "";
-        this.totalString = "";
         this.commentText.setText("");
+        
+        this.totalString = "$" + String.format("%.2f", total);
         
         this.mar.setText(String.format("%.2f", marSub) + " / " + String.format("%.2f", mar));
         //this.mar.setFont(Font.font("Gotham"));
