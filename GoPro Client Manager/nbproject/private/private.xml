@@ -6,12 +6,15 @@
             <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/GUIs/SummerFilterMenu.java</file>
         </group>
         <group name="Client_Manager">
+            <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/Objects/Printer.java</file>
             <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/GUIs/SummerMenu.java</file>
-            <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/InformationGUI/WinterInformationMenu.java</file>
-            <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/GUIs/WinterMenu.java</file>
-            <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/Objects/Payment.java</file>
+            <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/Objects/Client.java</file>
             <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/Application/Main.java</file>
             <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/NewClientGUI/SummerPaymentMenu.java</file>
+            <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/NewClientGUI/NewClientMenu.java</file>
+            <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/NewClientGUI/SummerServiceMenu.java</file>
+            <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/InformationGUI/SummerServicesUpdate.java</file>
+            <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/GUIs/WinterMenu.java</file>
             <file>file:/Users/purplesmurf/Documents/GitHub/Client_Manager/GoPro%20Client%20Manager/src/InformationGUI/SummerInformationMenu.java</file>
         </group>
     </open-files>

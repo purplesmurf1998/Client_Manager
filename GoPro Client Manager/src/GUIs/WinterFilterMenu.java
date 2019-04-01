@@ -556,7 +556,7 @@ public class WinterFilterMenu extends Stage{
                 }break;
             }
             
-            this.query += "order by client_information.address asc";
+            this.query += "order by client_information.door_number asc";
             
             System.out.println(query);
         

@@ -8,6 +8,7 @@ package GUIs;
 import InformationGUI.SummerInformationMenu;
 import NewClientGUI.NewClientMenu;
 import Objects.Client;
+import Objects.Printer;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,13 +19,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
@@ -34,6 +39,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -126,6 +132,7 @@ public class SummerMenu extends BorderPane{
     private ContextMenu deleteMenu = new ContextMenu();
     private MenuItem deleteClientBtn = new MenuItem("Delete");
     
+    private Alert fileExistsAlert = new Alert(AlertType.CONFIRMATION);
     public SummerMenu(){
         
     }
@@ -220,7 +227,7 @@ public class SummerMenu extends BorderPane{
                     }
                     
                     this.searchQuery += "and client_information.address LIKE '" + search + "%' ";
-                    this.searchQuery += "order by client_information.address asc ";
+                    this.searchQuery += "order by client_information.door_number asc ";
                     
                     System.out.println(this.searchQuery);
                     
@@ -250,7 +257,7 @@ public class SummerMenu extends BorderPane{
                     }
                     
                     this.searchQuery += "and client_information.name LIKE '" + search + "%' ";
-                    this.searchQuery += "order by client_information.address asc ";
+                    this.searchQuery += "order by client_information.door_number asc ";
                     
                     ResultSet rs = st.executeQuery(this.searchQuery);
                     this.tableList.clear();
@@ -267,24 +274,72 @@ public class SummerMenu extends BorderPane{
         });
         
         this.printBtn.setOnAction(e -> {
-            try {
-                PrintWriter writer = new PrintWriter(new FileOutputStream("Summer_Client_List.txt"));
-                for (int i = 0; i < this.tableList.size(); i++){
-                    writer.println(this.tableList.get(i).getAddress().getText() + " " + this.tableList.get(i).getCity() + "\n" + this.tableList.get(i).getComment().getText() + "\n");
+            final Printer printer = new Printer();
+            printer.show();
+                
+            printer.getField().setOnKeyPressed(a -> {
+                if (a.getCode() == KeyCode.ENTER){
+                    final String userHomeFolder = System.getProperty("user.home") + "/Desktop";
+                    final String fileName = printer.getField().getText();
                     
+                    File file = new File(userHomeFolder, fileName + ".txt");
+                    
+                    if (file.exists()){
+                        this.fileExistsAlert.setTitle("File Already Exists");
+                        this.fileExistsAlert.setHeaderText("The file " + file.getName() + " already exists on the desktop");
+                        this.fileExistsAlert.setContentText("Pressing 'Ok' will overwrite the current text files saved on the computer.\n"
+                                + "If you do not wish for this to happen, press Cancel and enter a different name.");
+                        Optional<ButtonType> button = this.fileExistsAlert.showAndWait();
+                        
+                        if (button.get() == ButtonType.OK){
+                            printer.close();
+                            try{
+                                printAddresses(printer.getField().getText());
+                            }
+                            catch (IOException ex){
+                                System.out.println(ex.getMessage());
+                                ex.printStackTrace();
+                            }
+                        }
+                    }
+                    else {
+                        printer.close();
+                        try{
+                            printAddresses(printer.getField().getText());
+                        }
+                        catch (IOException ex){
+                            System.out.println(ex.getMessage());
+                            ex.printStackTrace();
+                        }
+                    }
+                        
                 }
-                System.out.println("Addresses printed");
-                writer.close();
-                
-                File file = new File("Summer_Client_List.txt");
-                Desktop desktop = Desktop.getDesktop();
-                desktop.open(file);
-                
-            } catch (IOException ex) {
-                Logger.getLogger(WinterMenu.class.getName()).log(Level.SEVERE, null, ex);
-            } 
+            }); 
         });
         
+    }
+    
+    private void printAddresses(String fileName) throws IOException{
+        
+        String userHomeFolder = System.getProperty("user.home") + "/Desktop";
+        File file = new File(userHomeFolder, fileName + ".txt");
+        PrintWriter output = new PrintWriter(new FileOutputStream(file));
+        
+        String address = "";
+        String city = "";
+        String province = "QC";
+        String country = "Canada";
+        
+        for (int i = 0; i < this.tableList.size(); i++){
+            address = tableList.get(i).getAddress().getText();
+            city = tableList.get(i).getCity();
+            
+            output.println(address + ", " + city + ", " + province + ", " + country);
+        }
+        
+        output.close();
+        
+        Desktop.getDesktop().open(file);
     }
     
     private void setCenterTable(){
@@ -318,7 +373,7 @@ public class SummerMenu extends BorderPane{
                     + "summer_services.comments, client_information.city "
                     + "from summer_services inner join client_information "
                     + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' "
-                    + "order by client_information.address asc";
+                    + "order by client_information.door_number asc";
             ResultSet rs = st.executeQuery(query);
             
             this.tableList.clear();
@@ -430,6 +485,9 @@ public class SummerMenu extends BorderPane{
                                                        this.spring, this.fall, this.weedTreatment, this.aerationSpring, this.aerationFall, 
                                                        this.spiders, this.weeding, this.hedges, this.fertilizer, this.worms, this.soil, this.seeding);
                 this.filterMenu.show();
+                this.filterMenu.setOnCloseRequest(e -> {
+                    this.filterActive = false;
+                });
                 
                 this.filterMenu.getSaveBtn().setOnAction(b -> {
                     updateFilterSettings();
@@ -556,13 +614,14 @@ public class SummerMenu extends BorderPane{
                     + "summer_services.comments, client_information.city "
                     + "from summer_services inner join client_information "
                     + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' ";
-                    //+ "order by client_information.address asc";
+                    //+ "order by client_information.door_number asc";
         
     }
     
     public void refreshTable(){
         resetSearchQuery();
         //setSearchQuery();
+        this.searchQuery += "order by client_information.door_number asc ";
         
         this.tableList.clear();
         
@@ -579,6 +638,8 @@ public class SummerMenu extends BorderPane{
         }catch (SQLException ex){
             System.out.println(ex.getMessage());
         }
+        
+        resetSearchQuery();
     }
     
 }

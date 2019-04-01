@@ -738,4 +738,115 @@ public class SummerServiceMenu extends GridPane{
         return this.comment;
     }
     
+    public void changeServices(double lawn, double spring, double fall, double weedTreatment, double aerationSpring, double aerationFall, 
+            double spider, double weeding, double hedges, double fertilizer, double worms, double soil, double seeding, String comment){
+        
+        this.lawn = lawn;
+        if (this.lawn > 0){
+            this.total += this.lawn;
+            this.lawnBtn.setSelected(true);
+            this.lawnFld.setText(this.lawn + "");
+            this.lawnFld.setEditable(true);
+        }
+        
+        this.spring = spring;
+        if (this.spring > 0){
+            this.total += this.spring;
+            this.springBtn.setSelected(true);
+            this.springFld.setText(this.spring + "");
+            this.springFld.setEditable(true);
+        }
+        
+        this.fall = fall;
+        if (this.fall > 0){
+            this.total += this.fall;
+            this.fallBtn.setSelected(true);
+            this.fallFld.setText(this.fall + "");
+            this.fallFld.setEditable(true);
+        }
+        
+        this.weedTreatment = weedTreatment;
+        if (this.weedTreatment > 0){
+            this.total += this.weedTreatment;
+            this.weedTreatmentBtn.setSelected(true);
+            this.weedTreatmentFld.setText(this.weedTreatment + "");
+            this.weedTreatmentFld.setEditable(true);
+        }
+        
+        this.aerationSpring = aerationSpring;
+        if (this.aerationSpring > 0){
+            this.total += this.aerationSpring;
+            this.aerationSpringBtn.setSelected(true);
+            this.aerationSpringFld.setText(this.aerationSpring + "");
+            this.aerationSpringFld.setEditable(true);
+        }
+        
+        this.aerationFall = aerationFall;
+        if (this.aerationFall > 0){
+            this.total += this.aerationFall;
+            this.aerationFallBtn.setSelected(true);
+            this.aerationFallFld.setText(this.aerationFall + "");
+            this.aerationFallFld.setEditable(true);
+        }
+        
+        this.spider = spider;
+        if (this.spider > 0){
+            this.total += this.spider;
+            this.spiderBtn.setSelected(true);
+            this.spiderFld.setText(this.spider + "");
+            this.spiderFld.setEditable(true);
+        }
+        
+        this.weeding = weeding;
+        if (this.weeding > 0){
+            this.total += this.weeding;
+            this.weedingBtn.setSelected(true);
+            this.weedingFld.setText(this.weeding + "");
+            this.weedingFld.setEditable(true);
+        }
+        
+        this.hedges = hedges;
+        if (this.hedges > 0){
+            this.total += this.hedges;
+            this.hedgesBtn.setSelected(true);
+            this.hedgesFld.setText(this.hedges + "");
+            this.hedgesFld.setEditable(true);
+        }
+        
+        this.fertilizer = fertilizer;
+        if (this.fertilizer > 0){
+            this.total += this.fertilizer;
+            this.fertilizerBtn.setSelected(true);
+            this.fertilizerFld.setText(this.fertilizer + "");
+            this.fertilizerFld.setEditable(true);
+        }
+        
+        this.worms = worms;
+        if (this.worms > 0){
+            this.total += this.worms;
+            this.wormsBtn.setSelected(true);
+            this.wormsFld.setText(this.worms + "");
+            this.wormsFld.setEditable(true);
+        }
+        
+        this.soil = soil;
+        if (this.soil > 0){
+            this.total += this.soil;
+            this.soilBtn.setSelected(true);
+            this.soilFld.setText(this.soil + "");
+            this.soilFld.setEditable(true);
+        }
+        
+        this.seeding = seeding;
+        if (this.seeding > 0){
+            this.total += this.seeding;
+            this.seedingBtn.setSelected(true);
+            this.seedingFld.setText(this.seeding + "");
+            this.seedingFld.setEditable(true);
+        }
+        
+        this.updateTotals();
+        
+    }
+    
 }

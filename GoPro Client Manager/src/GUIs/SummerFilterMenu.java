@@ -591,7 +591,7 @@ public class SummerFilterMenu extends Stage{
         if (this.seeding)
             this.query += "and summer_services.seeding > 0 ";
         
-        this.query += "order by client_information.address asc";
+        this.query += "order by client_information.door_number asc";
             
         System.out.println(query);
     }

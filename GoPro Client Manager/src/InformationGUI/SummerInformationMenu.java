@@ -60,9 +60,9 @@ public class SummerInformationMenu extends Stage{
     private int status;
     
     /****************************
-     * WINTER VARIABLES
+     * SUMMER VARIABLES
      ****************************/
-    
+    /*
     private double lawn;
     private double spring;
     private double fall;
@@ -76,7 +76,7 @@ public class SummerInformationMenu extends Stage{
     private double worms;
     private double soil;
     private double seeding;
-    
+    */
     private double[] serviceList = new double[13];
     
     private LocalDate timestamp;
@@ -86,6 +86,8 @@ public class SummerInformationMenu extends Stage{
     private double total;
     
     private final Button saveBtn = new Button("Save");
+    
+    private final Button servicesBtn = new Button("Services");
     
     public SummerInformationMenu(Connection conn, String seasonId, int clientId, SummerMenu summerMenu){
         this.conn = conn;
@@ -324,7 +326,8 @@ public class SummerInformationMenu extends Stage{
         this.bottomPane.setPadding(this.insets);
         this.bottomPane.setAlignment(Pos.CENTER_RIGHT);
         
-        this.bottomPane.getChildren().add(this.saveBtn);
+        this.bottomPane.getChildren().addAll(this.saveBtn, this.servicesBtn);
+        this.servicesBtn.setDisable(true);
         
         this.topPane.setPadding(this.insets);
         this.topPane.setAlignment(Pos.CENTER);
@@ -342,6 +345,19 @@ public class SummerInformationMenu extends Stage{
             
             saveSummerInfo();
             this.close();
+        });
+        
+        this.servicesBtn.setOnAction(e -> {
+            SummerServicesUpdate servicesUpdate = new SummerServicesUpdate(this.conn, this.clientId, this.seasonId);
+            servicesUpdate.show();
+            
+            servicesUpdate.getSaveBtn().setOnAction(a -> {
+                servicesUpdate.saveServicesAndModifyPayments();
+                servicesUpdate.close();
+                this.summerMenu.refreshTable();
+                this.close();
+                
+            });
         });
         
         this.setScene(this.scene);

@@ -259,7 +259,7 @@ public class SummerPaymentMenu extends Stage{
             }break;
         }
         
-        this.query += "order by client_information.address asc";
+        this.query += "order by client_information.door_number asc";
     }
     
     private void resetQuery(){
@@ -451,7 +451,7 @@ public class SummerPaymentMenu extends Stage{
                     
                     + "from summer_payment inner join client_information "
                     + "on summer_payment.id = client_information.id and summer_payment.season = '" + this.seasonId + "' "
-                    + "order by client_information.address asc";
+                    + "order by client_information.door_number asc";
             ResultSet rs = st.executeQuery(query);
             
             this.clientList.clear();

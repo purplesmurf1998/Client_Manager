@@ -562,8 +562,14 @@ public class SummerPaymentMenu extends GridPane{
         for (int i = 0; i < boxList.length; i++)
             this.boxList[i].setSelected(false);
         
-        for(int i = 0; i < fldList.length; i++)
+        for(int i = 0; i < fldList.length; i++){
             this.fldList[i].setText("");
+            this.fldList[i].setEditable(false);
+        }
+        
+        this.saveBtn.setSelected(false);
+        this.saveFld.setText("");
+        this.saveFld.setEditable(false);
         
         this.mar = 0;
         this.apr = 0;

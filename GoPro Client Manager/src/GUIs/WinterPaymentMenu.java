@@ -255,7 +255,7 @@ public class WinterPaymentMenu extends Stage{
             }break;
         }
         
-        this.query += "order by client_information.address asc";
+        this.query += "order by client_information.door_number asc";
     }
     private void resetQuery(){
         this.query = "select client_information.address, client_information.name, "
@@ -393,7 +393,7 @@ public class WinterPaymentMenu extends Stage{
                     + "winter_payment.method, client_information.id, winter_payment.comments "
                     + "from winter_payment inner join client_information "
                     + "on winter_payment.id = client_information.id and winter_payment.season = '" + this.seasonId + "' "
-                    + "order by client_information.address asc";
+                    + "order by client_information.door_number asc";
             ResultSet rs = st.executeQuery(query);
             
             this.clientList.clear();

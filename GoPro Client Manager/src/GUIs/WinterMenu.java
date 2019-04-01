@@ -217,7 +217,7 @@ public class WinterMenu extends BorderPane{
                     }
                     
                     this.searchQuery += "and client_information.address LIKE '" + search + "%' ";
-                    this.searchQuery += "order by client_information.address asc";
+                    this.searchQuery += "order by client_information.door_number asc";
                     
                     System.out.println(this.searchQuery);
                     
@@ -247,7 +247,7 @@ public class WinterMenu extends BorderPane{
                     }
                     
                     this.searchQuery += "and client_information.name LIKE '" + search + "%' ";
-                    this.searchQuery += "order by client_information.address asc";
+                    this.searchQuery += "order by client_information.door_number asc";
                     
                     ResultSet rs = st.executeQuery(this.searchQuery);
                     this.tableList.clear();
@@ -296,7 +296,7 @@ public class WinterMenu extends BorderPane{
                     + "winter_services.comments, client_information.city "
                     + "from winter_services inner join client_information "
                     + "on winter_services.id = client_information.id and winter_services.season = '" + this.seasonId + "' "
-                    + "order by client_information.address asc";
+                    + "order by client_information.door_number asc";
             ResultSet rs = st.executeQuery(query);
             
             this.tableList.clear();
@@ -514,7 +514,7 @@ public class WinterMenu extends BorderPane{
                     + "winter_services.comments, client_information.city "
                     + "from winter_services inner join client_information "
                     + "on winter_services.id = client_information.id and winter_services.season = '" + this.seasonId + "' "
-                    + "order by client_information.address asc";
+                    + "order by client_information.door_number asc";
         
     }
     

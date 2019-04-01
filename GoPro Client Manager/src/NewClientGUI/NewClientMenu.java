@@ -11,7 +11,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.InputMismatchException;
 import java.util.Optional;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.geometry.Insets;
@@ -250,6 +252,9 @@ public class NewClientMenu extends Stage{
         int id = this.infoPage.getClientId();
         String season_id = this.id + this.seasonId;
         
+        Scanner addressInput = new Scanner(address);
+        
+        
         //Check if already added for season
         
         
@@ -262,6 +267,9 @@ public class NewClientMenu extends Stage{
         }
         else{
             try {
+                
+                int doorNumber = addressInput.nextInt();
+                addressInput.close();
                 
                 for (int i = 0; i < address.length(); i++){
                         if (address.charAt(i) == '\''){
@@ -276,8 +284,8 @@ public class NewClientMenu extends Stage{
                             
                 //Update client_information
                 if (id < 0){//add new client
-                    update = "insert into client_information(address, city, name, phone, email, status)"
-                            + " values ('" + address.toUpperCase() + "', '" + city.toUpperCase() + "', '" + name.toUpperCase() + "', '" + phone.toUpperCase() + "', '" + email.toUpperCase() + "', " + status + ")";
+                    update = "insert into client_information(address, city, name, phone, email, status, door_number)"
+                            + " values ('" + address.toUpperCase() + "', '" + city.toUpperCase() + "', '" + name.toUpperCase() + "', '" + phone.toUpperCase() + "', '" + email.toUpperCase() + "', " + status + ", " + doorNumber + ")";
                                 
                     st.executeUpdate(update);
                     update = "select id from client_information where LOWER(address) = '" + address.toLowerCase() + "'";
@@ -291,8 +299,8 @@ public class NewClientMenu extends Stage{
                 }
                 else{//update pre-existing client
                     update = "update client_information "
-                            + "set (address, city, name, phone, email, status)"
-                            + " = ('" + address.toUpperCase() + "', '" + city.toUpperCase() + "', '" + name.toUpperCase() + "', '" + phone.toUpperCase() + "', '" + email.toUpperCase() + "', " + status + ") "
+                            + "set (address, city, name, phone, email, status, door_number)"
+                            + " = ('" + address.toUpperCase() + "', '" + city.toUpperCase() + "', '" + name.toUpperCase() + "', '" + phone.toUpperCase() + "', '" + email.toUpperCase() + "', " + status + ", " + doorNumber + ") "
                             + "where id = " + id;
                                 
                     st.executeUpdate(update);
@@ -306,6 +314,12 @@ public class NewClientMenu extends Stage{
                 this.saveAlert.setHeaderText("Client already exists.");
                 this.saveAlert.setContentText("You have entered an existing address.\n"
                         + "Please select or delete existing client before saving.");
+                this.saveAlert.show();
+            } catch(InputMismatchException ex2){
+                System.out.println(ex2.getMessage());
+                this.saveAlert.setTitle("Client Save Error");
+                this.saveAlert.setHeaderText("Client address invalid.");
+                this.saveAlert.setContentText("Make sure that the door number is in fact a number and nothing else.");
                 this.saveAlert.show();
             }
             
@@ -381,7 +395,7 @@ public class NewClientMenu extends Stage{
             update = "INSERT INTO summer_payment "
                     + "VALUES (" + this.id + ", '" + this.seasonId + "', " + total + ", " + plan + ", " 
                     + mar + ", " + apr + ", " + may + ", " + jun + ", " + jul + ", " + aug + ", " + sep + ", " + oct + ", "
-                    + method + ", '" + paymentComment + "')";
+                    + method + ", '" + paymentComment + "', " + save + ")";
             System.out.println(update);
             
             st.executeUpdate(update);
