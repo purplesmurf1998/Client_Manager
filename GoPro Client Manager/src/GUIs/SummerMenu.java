@@ -123,6 +123,9 @@ public class SummerMenu extends BorderPane{
     private boolean seeding = false;
     private int status = 0;//0 = all, 1 = residential, 2 = commercial
     
+    private int numOfClients = 0;
+    private Text numOfClientsText = new Text();
+    
     private String searchQuery;
     
     private boolean filterActive = false;
@@ -185,7 +188,7 @@ public class SummerMenu extends BorderPane{
         this.centerTopPane.setPadding(insets);
         this.centerTopPane.setSpacing(10);
         this.centerTopPane.setAlignment(Pos.CENTER_RIGHT);
-        this.centerTopPane.getChildren().addAll(this.searchAddressBtn, this.searchNameBtn, this.searchBar);
+        this.centerTopPane.getChildren().addAll(this.numOfClientsText, this.searchAddressBtn, this.searchNameBtn, this.searchBar);
         
         this.centerCenterPane.getChildren().add(this.table);
         setCenterTable();
@@ -215,6 +218,7 @@ public class SummerMenu extends BorderPane{
         this.searchBar.setOnKeyReleased(e -> {
             if (!this.searchValue){//by address
                 try {
+                    resetSearchQuery();
                     
                     Statement st = this.conn.createStatement();
                     String search = this.searchBar.getText().toUpperCase();
@@ -238,13 +242,14 @@ public class SummerMenu extends BorderPane{
                         
                     }
                     
-                    resetSearchQuery();
+                    
                 }catch (SQLException ex){
                     System.out.println(ex.getMessage());
                 }
             }
             else {//by name
                 try {
+                    resetSearchQuery();
                     
                     Statement st = this.conn.createStatement();
                     String search = this.searchBar.getText().toUpperCase();
@@ -259,6 +264,9 @@ public class SummerMenu extends BorderPane{
                     this.searchQuery += "and client_information.name LIKE '" + search + "%' ";
                     this.searchQuery += "order by client_information.door_number asc ";
                     
+                    System.out.println(this.searchQuery);
+
+                    
                     ResultSet rs = st.executeQuery(this.searchQuery);
                     this.tableList.clear();
                     while (rs.next()){
@@ -266,11 +274,12 @@ public class SummerMenu extends BorderPane{
                         
                     }
                     
-                    resetSearchQuery();
+                    
                 }catch (SQLException ex){
                     System.out.println(ex.getMessage());
                 }
             }
+            countClients();
         });
         
         this.printBtn.setOnAction(e -> {
@@ -387,6 +396,8 @@ public class SummerMenu extends BorderPane{
             System.out.println(ex.getMessage());
         }
         
+        countClients();
+        
         this.table.setItems(this.tableList);
         
         this.table.setOnMouseClicked(e -> {
@@ -498,7 +509,7 @@ public class SummerMenu extends BorderPane{
                     this.filterMenu.filterList();
                     this.filterMenu.close();
                     this.filterActive = false;
-                    
+                    countClients();
                 });
             }
             else {
@@ -615,7 +626,7 @@ public class SummerMenu extends BorderPane{
                     + "from summer_services inner join client_information "
                     + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' ";
                     //+ "order by client_information.door_number asc";
-        
+        updateQuery();
     }
     
     public void refreshTable(){
@@ -640,6 +651,15 @@ public class SummerMenu extends BorderPane{
         }
         
         resetSearchQuery();
+        countClients();
+    }
+    
+    private void countClients(){
+        this.numOfClients = 0;
+        for (int i = 0; i < this.tableList.size(); i++){
+            this.numOfClients++;
+        }
+        this.numOfClientsText.setText("Total Clients Displayed: " + this.numOfClients);
     }
     
 }
