@@ -356,11 +356,24 @@ public class NewClientMenu extends Stage{
         String paymentComment = this.summerPaymentMenu.getComments();
         double save = this.summerPaymentMenu.getSave();
         
+        int[] months = {mar, apr, may, jun, jul, aug, sep, oct};
+        boolean validMonths = false;
         try {
             
             Statement st = this.conn.createStatement();
             
             String update;
+            
+            for (int i = 0; i < months.length; i++){
+                if (months[i] > 0){
+                    validMonths = true;
+                    break;
+                }
+            }
+            
+            if (!validMonths){
+                throw new NullPointerException();
+            }
             
             for (int i = 0; i < serviceComment.length(); i++){
                 if (serviceComment.charAt(i) == '\''){
@@ -409,6 +422,16 @@ public class NewClientMenu extends Stage{
             this.saveAlert.setHeaderText("Client already registered.");
             this.saveAlert.setContentText("This client has already been registered for the \n"
                     + "season " + this.seasonId + ". Modify or choose new client.");
+            this.saveAlert.show();
+        }
+        catch (NullPointerException ex2){
+            this.errorDontSave = true;
+            
+            System.out.println(ex2.getMessage());
+            
+            this.saveAlert.setTitle("Save Error");
+            this.saveAlert.setHeaderText("No months selected");
+            this.saveAlert.setContentText("No months have been selected for the payment. \nPlease select at least 1 month.");
             this.saveAlert.show();
         }
         
