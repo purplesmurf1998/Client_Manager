@@ -145,10 +145,11 @@ public class SummerMenu extends BorderPane{
         this.seasonId = seasonId;
         
         this.searchQuery = "select summer_services.id, client_information.address, client_information.status, "
-                    + "client_information.name, summer_services.total, client_information.phone, "
+                    + "client_information.name, summer_payment.total, client_information.phone, "
                     + "summer_services.comments, client_information.city "
-                    + "from summer_services inner join client_information "
-                    + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' ";
+                    + "from summer_services "
+                    + "inner join client_information on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' "
+                    + "inner join summer_payment on summer_services.id = summer_payment.id and summer_payment.season = '" + this.seasonId + "' ";
         
         setRightPane();
         setCenterPane();
@@ -378,10 +379,11 @@ public class SummerMenu extends BorderPane{
             
             Statement st = conn.createStatement();
             String query = "select summer_services.id, client_information.address, client_information.status, "
-                    + "client_information.name, summer_services.total, client_information.phone, "
+                    + "client_information.name, summer_payment.total, client_information.phone, "
                     + "summer_services.comments, client_information.city "
-                    + "from summer_services inner join client_information "
-                    + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' "
+                    + "from summer_services "
+                    + "inner join client_information on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' "
+                    + "inner join summer_payment on summer_services.id = summer_payment.id and summer_services.season = '" + this.seasonId + "' "
                     + "order by client_information.door_number asc";
             ResultSet rs = st.executeQuery(query);
             
@@ -621,11 +623,11 @@ public class SummerMenu extends BorderPane{
     
     private void resetSearchQuery(){
         this.searchQuery = "select summer_services.id, client_information.address, client_information.status, "
-                    + "client_information.name, summer_services.total, client_information.phone, "
+                    + "client_information.name, summer_payment.total, client_information.phone, "
                     + "summer_services.comments, client_information.city "
-                    + "from summer_services inner join client_information "
-                    + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' ";
-                    //+ "order by client_information.door_number asc";
+                    + "from summer_services "
+                    + "inner join client_information on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' "
+                    + "inner join summer_payment on summer_services.id = summer_payment.id and summer_payment.season = '" + this.seasonId + "' ";
         updateQuery();
     }
     

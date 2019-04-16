@@ -373,7 +373,7 @@ public class SummerPaymentMenu extends Stage{
             
         }
         catch (SQLException ex){
-            
+            ex.printStackTrace();
         }
     }
     

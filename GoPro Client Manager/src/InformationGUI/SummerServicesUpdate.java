@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -40,6 +42,7 @@ public class SummerServicesUpdate extends Stage{
         this.seasonId = seasonId;
         
         this.serviceMenu = new SummerServiceMenu(this.conn);
+        this.serviceMenu.disableCommentBtn();
         
         this.scene = new Scene(this.pane);
         this.setScene(scene);
@@ -48,6 +51,8 @@ public class SummerServicesUpdate extends Stage{
         this.pane.setBottom(this.bottomPane);
         
         this.bottomPane.getChildren().add(this.saveBtn);
+        this.bottomPane.setAlignment(Pos.CENTER_RIGHT);
+        this.bottomPane.setPadding(new Insets(5, 5, 5, 5));
         
         setUpServiceMenu();
         
@@ -117,7 +122,7 @@ public class SummerServicesUpdate extends Stage{
             ResultSet rs = st.executeQuery(query);
             
             while (rs.next()){
-                this.serviceMenu.changeServices(rs.getDouble(1), rs.getDouble(2), rs.getDouble(3), rs.getDouble(4), rs.getDouble(5), rs.getDouble(6), 
+                this.serviceMenu.displayServices(rs.getDouble(1), rs.getDouble(2), rs.getDouble(3), rs.getDouble(4), rs.getDouble(5), rs.getDouble(6), 
                         rs.getDouble(7), rs.getDouble(8), rs.getDouble(9), rs.getDouble(10), rs.getDouble(11), rs.getDouble(12), rs.getDouble(13), rs.getString(14));
             }
             

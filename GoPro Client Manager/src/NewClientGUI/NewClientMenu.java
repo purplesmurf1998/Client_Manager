@@ -341,6 +341,7 @@ public class NewClientMenu extends Stage{
         double seeding = this.summerServiceMenu.getSeeding();
         String serviceComment = this.summerServiceMenu.getComment();
         String season_id = this.id + this.seasonId;
+        double servicesTotal = this.summerServiceMenu.getTotal();//total of services before savings (if any)
         
         int plan = this.summerPaymentMenu.getPlan();
         int mar = this.summerPaymentMenu.getMar();
@@ -352,7 +353,7 @@ public class NewClientMenu extends Stage{
         int sep = this.summerPaymentMenu.getSep();
         int oct = this.summerPaymentMenu.getOct();
         int method = this.summerPaymentMenu.getMethod();
-        double total = this.summerPaymentMenu.getTotal();
+        double paymentTotal = this.summerPaymentMenu.getTotal();//total of services after savings (if any)
         String paymentComment = this.summerPaymentMenu.getComments();
         double save = this.summerPaymentMenu.getSave();
         
@@ -399,14 +400,14 @@ public class NewClientMenu extends Stage{
                     + lawn + ", " + spring + ", " + fall + ", " + weedTreatment + ", " 
                     + aerationSpring + ", " + aerationFall + ", " + spider + ", "  + weeding + ", "  + hedges + ", " 
                     + fertilizer + ", " + worms + ", "  + soil + ", "  + seeding + ", "    
-                    + total + ", '" + serviceComment + "', '" + season_id.toUpperCase() + "')";
+                    + servicesTotal + ", '" + serviceComment + "', '" + season_id.toUpperCase() + "')";
             System.out.println(update);
             
             st.executeUpdate(update);
             
             //update summer payment
             update = "INSERT INTO summer_payment "
-                    + "VALUES (" + this.id + ", '" + this.seasonId + "', " + total + ", " + plan + ", " 
+                    + "VALUES (" + this.id + ", '" + this.seasonId + "', " + paymentTotal + ", " + plan + ", " 
                     + mar + ", " + apr + ", " + may + ", " + jun + ", " + jul + ", " + aug + ", " + sep + ", " + oct + ", "
                     + method + ", '" + paymentComment + "', " + save + ")";
             System.out.println(update);

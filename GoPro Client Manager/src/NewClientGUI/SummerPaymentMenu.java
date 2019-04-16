@@ -106,6 +106,9 @@ public class SummerPaymentMenu extends GridPane{
     private int aug = 0;
     private int sep = 0;
     private int oct = 0;
+    
+    private int[] monthList = {mar, apr, may, jun, jul, aug, sep, oct};
+    
     private String comment = "";
     private double initialTotal = 0;
     private double finalTotal = 0;
@@ -194,6 +197,8 @@ public class SummerPaymentMenu extends GridPane{
         for (int i = 0; i < this.boxList.length; i++){
             GridPane.setHalignment(this.boxList[i], HPos.RIGHT);
             this.boxList[i].setSelected(false);
+            this.boxList[i].setDisable(true);
+            this.boxList[i].setFocusTraversable(false);
         }
         
         for (int i = 0; i < this.btnList.length; i++){
@@ -213,6 +218,7 @@ public class SummerPaymentMenu extends GridPane{
             this.fldList[i].setMaxSize(80, 30);
             this.fldList[i].setFont(Font.font("Rockwell", 12));
             this.fldList[i].setEditable(false);
+            this.fldList[i].setFocusTraversable(false);
         }
         
         this.saveFld.setMinSize(80, 30);
@@ -257,6 +263,8 @@ public class SummerPaymentMenu extends GridPane{
         
         GridPane.setHalignment(this.totalText, HPos.RIGHT);
         
+        this.setPadding(new Insets(5, 5, 5, 5));
+        
         setUpButtons();
     }
     
@@ -282,149 +290,49 @@ public class SummerPaymentMenu extends GridPane{
     }
     
     private void setUpButtons(){
-        this.marBtn.setOnAction(e -> {
-            if (this.marBtn.isSelected()){
-                this.marBox.setSelected(true);
-                this.plan++;
-                this.planText.setText("Payments: " + this.plan);
-                this.mar = 2;
-                updateFields();
-            }
-            else {
-                this.marBox.setSelected(false);
-                this.plan--;
-                this.planText.setText("Payments: " + this.plan);
-                this.mar = 0;
-                this.marFld.setText("");
-                updateFields();
-            }
-        });
         
-        this.aprBtn.setOnAction(e -> {
-            if (this.aprBtn.isSelected()){
-                this.aprBox.setSelected(true);
-                this.plan++;
-                this.planText.setText("Payments: " + this.plan);
-                this.apr = 2;
-                updateFields();
-            }
-            else {
-                this.aprBox.setSelected(false);
-                this.plan--;
-                this.planText.setText("Payments: " + this.plan);
-                this.apr = 0;
-                this.aprFld.setText("");
-                updateFields();
-            }
-        });
-        
-        this.mayBtn.setOnAction(e -> {
-            if (this.mayBtn.isSelected()){
-                this.mayBox.setSelected(true);
-                this.plan++;
-                this.planText.setText("Payments: " + this.plan);
-                this.may = 2;
-                updateFields();
-            }
-            else {
-                this.mayBox.setSelected(false);
-                this.plan--;
-                this.planText.setText("Payments: " + this.plan);
-                this.may = 0;
-                this.mayFld.setText("");
-                updateFields();
-            }
-        });
-        
-        this.junBtn.setOnAction(e -> {
-            if (this.junBtn.isSelected()){
-                this.junBox.setSelected(true);
-                this.plan++;
-                this.planText.setText("Payments: " + this.plan);
-                this.jun = 2;
-                updateFields();
-            }
-            else {
-                this.junBox.setSelected(false);
-                this.plan--;
-                this.planText.setText("Payments: " + this.plan);
-                this.jun = 0;
-                this.junFld.setText("");
-                updateFields();
-            }
-        });
-        
-        this.julBtn.setOnAction(e -> {
-            if (this.julBtn.isSelected()){
-                this.julBox.setSelected(true);
-                this.plan++;
-                this.planText.setText("Payments: " + this.plan);
-                this.jul = 2;
-                updateFields();
-            }
-            else {
-                this.julBox.setSelected(false);
-                this.plan--;
-                this.planText.setText("Payments: " + this.plan);
-                this.jul = 0;
-                this.julFld.setText("");
-                updateFields();
-            }
-        });
-        
-        this.augBtn.setOnAction(e -> {
-            if (this.augBtn.isSelected()){
-                this.augBox.setSelected(true);
-                this.plan++;
-                this.planText.setText("Payments: " + this.plan);
-                this.aug = 2;
-                updateFields();
-            }
-            else {
-                this.augBox.setSelected(false);
-                this.plan--;
-                this.planText.setText("Payments: " + this.plan);
-                this.aug = 0;
-                this.augFld.setText("");
-                updateFields();
-            }
-        });
-        
-        this.sepBtn.setOnAction(e -> {
-            if (this.sepBtn.isSelected()){
-                this.sepBox.setSelected(true);
-                this.plan++;
-                this.planText.setText("Payments: " + this.plan);
-                this.sep = 2;
-                updateFields();
-            }
-            else {
-                this.sepBox.setSelected(false);
-                this.plan--;
-                this.planText.setText("Payments: " + this.plan);
-                this.sep = 0;
-                this.sepFld.setText("");
-                updateFields();
-            }
-        });
-        
-        this.octBtn.setOnAction(e -> {
-            if (this.octBtn.isSelected()){
-                this.octBox.setSelected(true);
-                this.plan++;
-                this.planText.setText("Payments: " + this.plan);
-                this.oct = 2;
-                updateFields();
-            }
-            else {
-                this.octBox.setSelected(false);
-                this.plan--;
-                this.planText.setText("Payments: " + this.plan);
-                this.oct = 0;
-                this.octFld.setText("");
-                updateFields();
-            }
-        });
+        for (int i = 0; i < this.btnList.length; i++){
+            ToggleButton btn = this.btnList[i];
+            CheckBox box = this.boxList[i];
+            int index = i;
+            btn.setOnAction(e -> {
+                if (btn.isSelected()){
+                    box.setSelected(true);
+                    box.setDisable(false);
+                    this.plan++;
+                    this.planText.setText(("Payments: " + this.plan));
+                    switch(index){
+                        case 0:this.mar = 2;break;
+                        case 1:this.apr = 2;break;
+                        case 2:this.may = 2;break;
+                        case 3:this.jun = 2;break;
+                        case 4:this.jul = 2;break;
+                        case 5:this.aug = 2;break;
+                        case 6:this.sep = 2;break;
+                        case 7:this.oct = 2;break;
+                    }
+                    updateFields();
+                }
+                else{
+                    box.setSelected(false);
+                    box.setDisable(true);
+                    this.plan--;
+                    this.planText.setText("Payments: " + this.plan);
+                    switch(index){
+                        case 0:this.mar = 0;break;
+                        case 1:this.apr = 0;break;
+                        case 2:this.may = 0;break;
+                        case 3:this.jun = 0;break;
+                        case 4:this.jul = 0;break;
+                        case 5:this.aug = 0;break;
+                        case 6:this.sep = 0;break;
+                        case 7:this.oct = 0;break;
+                    }
+                    this.fldList[index].setText("");
+                    updateFields();
+                }
+            });
+        }
         
         this.saveBtn.setOnAction(e -> {
             if (this.saveBtn.isSelected()){
@@ -464,8 +372,10 @@ public class SummerPaymentMenu extends GridPane{
             for (int i = 0; i < btnList.length; i++)
                 this.btnList[i].setSelected(true);
             
-            for (int i = 0; i < boxList.length; i++)
+            for (int i = 0; i < boxList.length; i++){
                 this.boxList[i].setSelected(true);
+                this.boxList[i].setDisable(false);
+            }
             
             this.mar = 2;
             this.apr = 2;
@@ -640,6 +550,83 @@ public class SummerPaymentMenu extends GridPane{
     }
     public double getSave(){
         return this.save;
+    }
+    
+    public void disableCommentsBtn(){
+        this.getChildren().remove(this.commentBtn);
+    }
+    
+    public void displayServices(int mar, int apr, int may, int jun, int jul, int aug, int sep, int oct, int method, double total, double saved, int plan){
+        /*
+        TOTAL:
+        total comes from summer_services since it needs to be the original double
+        
+        SAVED:
+        saved comes from summer_payment, and if anything changes, will update the total currently saved in summer_payment
+        
+        MONTHS:
+        0 = no payment for this month
+        1 = payment not recieved
+        2 = payment recieved not deposited
+        */
+        
+        System.out.println(mar + " " + apr + " " + may + " " + jun + " " + jul + " " + aug + " " + sep + " " + oct + "\n"
+                + method + "\n" + total + "\n" + saved + "\n" + plan);
+        
+        int[] months = {mar, apr, may, jun, jul, aug, sep, oct};
+        
+        this.plan = plan;
+        this.planText.setText("Payments: " + this.plan);
+        this.method = method;
+        this.initialTotal = total;
+        this.save = saved;
+        
+        this.mar = mar;
+        this.apr = apr;
+        this.may = may;
+        this.jun = jun;
+        this.jul = jul;
+        this.aug = aug;
+        this.oct = oct;
+        
+        if (saved == 0){
+            this.saveBtn.setSelected(false);
+            this.saveFld.setEditable(false);
+            this.saveFld.setText("");
+        }
+        else if (saved > 0){
+            this.saveBtn.setSelected(true);
+            this.saveFld.setEditable(true);
+            this.saveFld.setText("" + saved);
+        }
+        
+        for (int i = 0; i < months.length; i++){
+            switch (months[i]){
+                case 0:
+                {
+                    this.btnList[i].setSelected(false);
+                    this.boxList[i].setSelected(false);
+                    this.boxList[i].setDisable(true);
+                }break;
+                case 1:
+                {
+                    this.btnList[i].setSelected(true);
+                    this.boxList[i].setSelected(false);
+                    this.boxList[i].setDisable(false);
+                }break;
+                case 2:
+                {
+                    this.btnList[i].setSelected(true);
+                    this.boxList[i].setSelected(true);
+                    this.boxList[i].setDisable(false);
+                }break;
+            }
+        }
+        
+        this.updateTotal();
+        this.updateFields();
+        
+        
     }
     
 }

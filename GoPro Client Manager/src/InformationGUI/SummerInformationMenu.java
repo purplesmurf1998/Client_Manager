@@ -58,6 +58,7 @@ public class SummerInformationMenu extends Stage{
     private String phone;
     private String email;
     private int status;
+    private double saved;
     
     /****************************
      * SUMMER VARIABLES
@@ -88,6 +89,7 @@ public class SummerInformationMenu extends Stage{
     private final Button saveBtn = new Button("Save");
     
     private final Button servicesBtn = new Button("Services");
+    private final Button paymentBtn = new Button("Payment");
     
     public SummerInformationMenu(Connection conn, String seasonId, int clientId, SummerMenu summerMenu){
         this.conn = conn;
@@ -136,13 +138,14 @@ public class SummerInformationMenu extends Stage{
         rs.close();
         
         //get summer payment
-        query = "select method, comments, total from summer_payment where id = " + this.clientId + " and season = '" + this.seasonId + "'";
+        query = "select method, comments, total, saved from summer_payment where id = " + this.clientId + " and season = '" + this.seasonId + "'";
             
         rs = st.executeQuery(query);
         while (rs.next()){
             this.method = rs.getInt(1);
             this.paymentComment = rs.getString(2);
             this.total = rs.getDouble(3);
+            this.saved = rs.getDouble(4);
         }
         rs.close();
             
@@ -168,6 +171,7 @@ public class SummerInformationMenu extends Stage{
         TextField cityText = new TextField(this.city);
         TextField phoneText = new TextField(this.phone);
         TextField emailText = new TextField(this.email);
+        Text savedText = new Text(this.saved + "%");
         Text statusText = new Text();
         if (this.status == 0)
             statusText.setText("Residential");
@@ -179,6 +183,7 @@ public class SummerInformationMenu extends Stage{
         Text phoneLbl = new Text("Phone: ");
         Text emailLbl = new Text("Email: ");
         Text statusLbl = new Text("Status: ");
+        Text savedLbl = new Text("Saved: ");
         
         this.leftPane.add(nameLbl, 0, 0);
         this.leftPane.add(nameText, 1, 0);
@@ -190,6 +195,8 @@ public class SummerInformationMenu extends Stage{
         this.leftPane.add(emailText, 1, 3);
         this.leftPane.add(statusLbl, 0, 4);
         this.leftPane.add(statusText, 1, 4);
+        this.leftPane.add(savedLbl, 0, 5);
+        this.leftPane.add(savedText, 1, 5);
         
         this.leftPane.setAlignment(Pos.CENTER);
         this.leftPane.setVgap(10);
@@ -325,9 +332,10 @@ public class SummerInformationMenu extends Stage{
         
         this.bottomPane.setPadding(this.insets);
         this.bottomPane.setAlignment(Pos.CENTER_RIGHT);
+        this.bottomPane.setSpacing(5);
         
-        this.bottomPane.getChildren().addAll(this.saveBtn, this.servicesBtn);
-        this.servicesBtn.setDisable(true);
+        this.bottomPane.getChildren().addAll(this.servicesBtn, this.paymentBtn, this.saveBtn);
+        //this.servicesBtn.setDisable(true);
         
         this.topPane.setPadding(this.insets);
         this.topPane.setAlignment(Pos.CENTER);
@@ -360,7 +368,48 @@ public class SummerInformationMenu extends Stage{
             });
         });
         
+        this.paymentBtn.setOnAction(e -> {
+            if (verifyClientModifiable()){
+                SummerPaymentUpdate paymentUpdate = new SummerPaymentUpdate(this.conn, this.clientId, this.seasonId);
+                paymentUpdate.show();
+                
+                paymentUpdate.getSaveBtn().setOnAction(a -> {
+                    paymentUpdate.savePaymentModification();
+                    paymentUpdate.close();
+                    this.summerMenu.refreshTable();
+                    this.close();
+                });
+            }
+            else{
+                System.out.println("Nope...Can't do that!");
+            }
+        });
+        
         this.setScene(this.scene);
+    }
+    
+    private boolean verifyClientModifiable(){
+        try {
+            Statement st = this.conn.createStatement();
+            
+            String query = "select mar, apr, may, jun, jul, aug, sep, oct from summer_payment where id = " + this.clientId + " "
+                    + "and season = '" + this.seasonId + "'";
+            
+            ResultSet rs = st.executeQuery(query);
+            
+            while (rs.next()){
+                for (int i = 1; i < 8; i++){
+                    if (rs.getInt(i) == 3)
+                        return false;
+                }
+            }
+            
+            return true;
+            
+        }catch (SQLException ex){
+            ex.printStackTrace();
+            return false;
+        }
     }
     
     private void saveSummerInfo(){

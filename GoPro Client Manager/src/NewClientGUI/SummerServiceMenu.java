@@ -738,7 +738,7 @@ public class SummerServiceMenu extends GridPane{
         return this.comment;
     }
     
-    public void changeServices(double lawn, double spring, double fall, double weedTreatment, double aerationSpring, double aerationFall, 
+    public void displayServices(double lawn, double spring, double fall, double weedTreatment, double aerationSpring, double aerationFall, 
             double spider, double weeding, double hedges, double fertilizer, double worms, double soil, double seeding, String comment){
         
         this.lawn = lawn;
@@ -847,6 +847,10 @@ public class SummerServiceMenu extends GridPane{
         
         this.updateTotals();
         
+    }
+    
+    public void disableCommentBtn(){
+        this.getChildren().remove(this.commentBtn);
     }
     
 }
