@@ -22,32 +22,34 @@ import javafx.scene.text.Text;
  */
 public class GoProMenu extends BorderPane{
     
-    private Connection conn;
-    private Main main;
-    private String seasonId;
+    private Connection conn;//connection to the database
+    private Main main;//pointer to the main class for when user logs out
+    private String seasonId;//seasonId for the session
     
+    //Attributes for menu display
     private Insets insets = new Insets(10, 10, 10, 10);
-    
-    private HBox topPane = new HBox();
-    private Button logoutBtn = new Button("Logout");
+    private HBox topPane = new HBox();//Pane for the top pane of the borderpane. Contains the logout button and the title
+    private Button logoutBtn = new Button("Logout");//logout button for when user wants to go back to login page
     private Text title = new Text();
     
-    private SummerMenu summerCenterPane;
-    private WinterMenu winterCenterPane;
+    //The different menus that can be displayed
+    private SummerMenu summerMenu;//menu for summer season
+    private WinterMenu winterMenu;//menu for winter season
     
-    private boolean activeMenu; //0 = winter, 1 = summer
+    //Property to know which menu is currently active
+    private boolean activeMenu; //false = winter, true = summer
     
-    public GoProMenu(){
-        
-    }//Default constructor
-    
+    /**
+     * Main constructor
+     * @param conn
+     * @param main
+     */
     public GoProMenu(Connection conn, Main main){
         this.conn = conn;
         this.main = main;
-        
-        
     }
     
+    //sets the layout of the top pane of the border pane
     private void setTopPane(){
         this.setTop(this.topPane);
         
@@ -65,37 +67,53 @@ public class GoProMenu extends BorderPane{
         }
         this.title.setFont(Font.font("Rockwell"));
         
-        this.logoutBtn.setOnAction(e -> {
-            this.main.switchToLoginPage();
-            if (!this.activeMenu) 
-                this.winterCenterPane.closeAllStages();
-            
-        });
-        
     }
     
+    //sets the action of all the buttons in the pane
+    private void setButtonAction(){
+        //Logout and switch to login menu
+        this.logoutBtn.setOnAction(e -> {
+            this.main.switchToLoginPageFromClient();
+            if (!this.activeMenu) 
+                this.winterMenu.closeAllStages();
+            else{
+                //close all stages for summerCenterPane
+            }
+        });
+    }
+    
+    /*
+    * Creates the menu that will be used as the center pane.
+    * Depending on the seasonId provided by the setSeasonId() method, the summer or winter menu will be created
+    */
     private void createMenus(){
         switch(this.seasonId.charAt(0)){
             case 'W':
             {
-                winterCenterPane = new WinterMenu(this.conn, this.seasonId);
-                this.setCenter(winterCenterPane);
+                winterMenu = new WinterMenu(this.conn, this.seasonId);
+                this.setCenter(winterMenu);
                 this.activeMenu = false;
             }break;
             case 'S':
             {
-                summerCenterPane = new SummerMenu(this.conn, this.seasonId);
-                this.setCenter(summerCenterPane);
+                summerMenu = new SummerMenu(this.conn, this.seasonId);
+                this.setCenter(summerMenu);
                 this.activeMenu = true;
             }break;
             default:System.out.println("Error in creatMenus GoProMenu line 66");
         }
     }
     
+    /**
+     * Prompt for the seasonId that will be used throughout the session
+     * set it, set the top pane, create the menu and activate the button action to logout
+     * @param seasonId
+     */
     public void setSeasonId(String seasonId){
         this.seasonId = seasonId;
         setTopPane();
         createMenus();
+        setButtonAction();
     }
     
     

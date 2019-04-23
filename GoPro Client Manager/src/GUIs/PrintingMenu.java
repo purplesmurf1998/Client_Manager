@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Objects;
+package GUIs;
 
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -14,13 +14,13 @@ import javafx.stage.Stage;
  *
  * @author purplesmurf
  */
-public class Printer extends Stage{
+public class PrintingMenu extends Stage{
     
     private Pane pane = new Pane();
     private TextField fileNameField = new TextField();
     private String fileName = "";
     
-    public Printer(){
+    public PrintingMenu(){
         this.pane.getChildren().add(this.fileNameField);
         this.setScene(new Scene(this.pane));
     }

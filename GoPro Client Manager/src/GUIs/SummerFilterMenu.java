@@ -30,21 +30,23 @@ import javafx.stage.Stage;
  */
 public class SummerFilterMenu extends Stage{
     
-    private Connection conn;
-    private ObservableList<Client> tableList;
-    private String seasonId;
+    private Connection conn;//connection to the database
+    private ObservableList<Client> tableList;//observable list that is used for the tableview in the summer menu
+    private String seasonId;//seasonId of the current session
     
     private Scene scene;
     private final BorderPane pane = new BorderPane();
     private final GridPane centerPane = new GridPane();
     private final HBox topPane = new HBox();
     
-    /*
-    if the allClients option is true, then ignore every other option
-    show all clients, and set everything else to false, as well as
-    setSelected() to false
-    */
-    
+    /**
+     * HOW THE FILTERING WORKS
+     * 
+     * The status can be either everyone, residential or commercial. 
+     * By default the status is set to all clients.
+     * The user can choose 1 of the three status, with a combination of all the services provided.
+     * Pressing on a status when it is already selected will deactivate all the services selected.
+     */
     private int status; //0 = all clients, 1 = residential, 2 = commercial
     
     private boolean lawn;
@@ -89,34 +91,56 @@ public class SummerFilterMenu extends Stage{
     
     private Button saveBtn = new Button("Save");
     
+    //list of all the buttons
     private ToggleButton[] btnList = {allClientsBtn, residentialBtn, commercialBtn, lawnBtn, springBtn, fallBtn, weedTreatmentBtn, aerationSpringBtn, 
         aerationFallBtn, spiderBtn, weedingBtn, hedgesBtn, fertilizerBtn, wormsBtn, soilBtn, seedingBtn};
     
+    //toggle group for the status buttons
     private ToggleGroup statusGroup = new ToggleGroup();
     
+    //the string that displays what the user is currently filtering
     private Text filterString = new Text();
-    
     private String statusString = "";
     
-    private Text lawnStr = new Text();
-    private Text springStr = new Text();
-    private Text fallStr = new Text();
-    private Text weedTreatmentStr = new Text();
-    private Text aerationSpringStr = new Text();
-    private Text aerationFallStr = new Text();
-    private Text spiderStr = new Text();
-    private Text weedingStr = new Text();
-    private Text hedgesStr = new Text();
-    private Text fertilizerStr = new Text();
-    private Text wormsStr = new Text();
-    private Text soilStr = new Text();
-    private Text seedingStr = new Text();
+    private String lawnStr = "";
+    private String springStr = "";
+    private String fallStr = "";
+    private String weedTreatmentStr = "";
+    private String aerationSpringStr = "";
+    private String aerationFallStr = "";
+    private String spiderStr = "";
+    private String weedingStr = "";
+    private String hedgesStr = "";
+    private String fertilizerStr = "";
+    private String wormsStr = "";
+    private String soilStr = "";
+    private String seedingStr = "";
     
-    private Text[] stringList = {lawnStr, springStr, fallStr, weedTreatmentStr, aerationSpringStr, aerationFallStr, spiderStr, weedingStr, 
+    private String[] stringList = {lawnStr, springStr, fallStr, weedTreatmentStr, aerationSpringStr, aerationFallStr, spiderStr, weedingStr, 
                                  hedgesStr, fertilizerStr, wormsStr, soilStr, seedingStr};
     
     private String query = "";
     
+    /**
+     *
+     * @param conn
+     * @param seasonId
+     * @param tableList
+     * @param status
+     * @param lawn
+     * @param spring
+     * @param fall
+     * @param weedTreatment
+     * @param aerationSpring
+     * @param aerationFall
+     * @param spider
+     * @param weeding
+     * @param hedges
+     * @param fertilizer
+     * @param worms
+     * @param soil
+     * @param seeding
+     */
     public SummerFilterMenu(Connection conn, String seasonId, ObservableList<Client> tableList, int status, boolean lawn, 
                             boolean spring, boolean fall, boolean weedTreatment, boolean aerationSpring, boolean aerationFall, boolean spider, 
                             boolean weeding, boolean hedges, boolean fertilizer, boolean worms, boolean soil, boolean seeding){
@@ -148,7 +172,7 @@ public class SummerFilterMenu extends Stage{
                     + "on summer_services.id = client_information.id and summer_services.season = '" + this.seasonId + "' ";
         
         setStage();
-        setButtons(serviceList);
+        setStatusButtonAction(serviceList);
         
         updateFilterString();
     }
@@ -208,11 +232,11 @@ public class SummerFilterMenu extends Stage{
         this.commercialBtn.setToggleGroup(this.statusGroup);
         this.allClientsBtn.setToggleGroup(this.statusGroup);
         
-        setButtonAction();
+        setServicesButtonAction();
         
     }
     
-    private void setButtonAction(){
+    private void setServicesButtonAction(){
         this.allClientsBtn.setOnAction(e -> {
             if (this.allClientsBtn.isSelected()){
                 this.status = 0;
@@ -261,12 +285,12 @@ public class SummerFilterMenu extends Stage{
         this.lawnBtn.setOnAction(e -> {
             if (this.lawnBtn.isSelected()){
                 this.lawn = true;
-                this.lawnStr.setText("| Lawn ");
+                this.lawnStr = "| Lawn ";
                 updateFilterString();
             }
             else {
                 this.lawn = false;
-                this.lawnStr.setText("");
+                this.lawnStr = "";
                 this.updateFilterString();
             }
         });
@@ -274,12 +298,12 @@ public class SummerFilterMenu extends Stage{
         this.springBtn.setOnAction(e -> {
             if (this.springBtn.isSelected()){
                 this.spring = true;
-                this.springStr.setText("| Spring ");
+                this.springStr = "| Spring ";
                 updateFilterString();
             }
             else {
                 this.spring = false;
-                this.springStr.setText("");
+                this.springStr = "";
                 this.updateFilterString();
             }
         });
@@ -287,12 +311,12 @@ public class SummerFilterMenu extends Stage{
         this.fallBtn.setOnAction(e -> {
             if (this.fallBtn.isSelected()){
                 this.fall = true;
-                this.fallStr.setText("| Fall ");
+                this.fallStr = "| Fall ";
                 updateFilterString();
             }
             else {
                 this.fall = false;
-                this.fallStr.setText("");
+                this.fallStr = "";
                 this.updateFilterString();
             }
         });
@@ -300,12 +324,12 @@ public class SummerFilterMenu extends Stage{
         this.weedTreatmentBtn.setOnAction(e -> {
             if (this.weedTreatmentBtn.isSelected()){
                 this.weedTreatment = true;
-                this.weedTreatmentStr.setText("| Weed Treatment ");
+                this.weedTreatmentStr = "| Weed Treatment ";
                 updateFilterString();
             }
             else {
                 this.weedTreatment = false;
-                this.weedTreatmentStr.setText("");
+                this.weedTreatmentStr = "";
                 this.updateFilterString();
             }
         });
@@ -313,12 +337,12 @@ public class SummerFilterMenu extends Stage{
         this.aerationSpringBtn.setOnAction(e -> {
             if (this.aerationSpringBtn.isSelected()){
                 this.aerationSpring = true;
-                this.aerationSpringStr.setText("| Aeration Spring ");
+                this.aerationSpringStr = "| Aeration Spring ";
                 updateFilterString();
             }
             else {
                 this.aerationSpring = false;
-                this.aerationSpringStr.setText("");
+                this.aerationSpringStr = "";
                 this.updateFilterString();
             }
         });
@@ -326,12 +350,12 @@ public class SummerFilterMenu extends Stage{
         this.aerationFallBtn.setOnAction(e -> {
             if (this.aerationFallBtn.isSelected()){
                 this.aerationFall = true;
-                this.aerationFallStr.setText("| Aeration Fall ");
+                this.aerationFallStr = "| Aeration Fall ";
                 updateFilterString();
             }
             else {
                 this.aerationFall = false;
-                this.aerationFallStr.setText("");
+                this.aerationFallStr = "";
                 this.updateFilterString();
             }
         });
@@ -339,12 +363,12 @@ public class SummerFilterMenu extends Stage{
         this.spiderBtn.setOnAction(e -> {
             if (this.spiderBtn.isSelected()){
                 this.spider = true;
-                this.spiderStr.setText("| Spiders ");
+                this.spiderStr = "| Spiders ";
                 updateFilterString();
             }
             else {
                 this.spider = false;
-                this.spiderStr.setText("");
+                this.spiderStr = "";
                 this.updateFilterString();
             }
         });
@@ -352,12 +376,12 @@ public class SummerFilterMenu extends Stage{
         this.weedingBtn.setOnAction(e -> {
             if (this.weedingBtn.isSelected()){
                 this.weeding = true;
-                this.weedingStr.setText("| Weeding ");
+                this.weedingStr = "| Weeding ";
                 updateFilterString();
             }
             else {
                 this.weeding = false;
-                this.weedingStr.setText("");
+                this.weedingStr = "";
                 this.updateFilterString();
             }
         });
@@ -365,12 +389,12 @@ public class SummerFilterMenu extends Stage{
         this.hedgesBtn.setOnAction(e -> {
             if (this.hedgesBtn.isSelected()){
                 this.hedges = true;
-                this.hedgesStr.setText("| Hedges ");
+                this.hedgesStr = "| Hedges ";
                 updateFilterString();
             }
             else {
                 this.hedges = false;
-                this.hedgesStr.setText("");
+                this.hedgesStr = "";
                 this.updateFilterString();
             }
         });
@@ -378,12 +402,12 @@ public class SummerFilterMenu extends Stage{
         this.fertilizerBtn.setOnAction(e -> {
             if (this.fertilizerBtn.isSelected()){
                 this.fertilizer = true;
-                this.fertilizerStr.setText("| Fertilizer ");
+                this.fertilizerStr = "| Fertilizer ";
                 updateFilterString();
             }
             else {
                 this.fertilizer = false;
-                this.fertilizerStr.setText("");
+                this.fertilizerStr = "";
                 this.updateFilterString();
             }
         });
@@ -391,12 +415,12 @@ public class SummerFilterMenu extends Stage{
         this.wormsBtn.setOnAction(e -> {
             if (this.wormsBtn.isSelected()){
                 this.worms = true;
-                this.wormsStr.setText("| Worms ");
+                this.wormsStr = "| Worms ";
                 updateFilterString();
             }
             else {
                 this.worms = false;
-                this.wormsStr.setText("");
+                this.wormsStr = "";
                 this.updateFilterString();
             }
         });
@@ -404,12 +428,12 @@ public class SummerFilterMenu extends Stage{
         this.soilBtn.setOnAction(e -> {
             if (this.soilBtn.isSelected()){
                 this.soil = true;
-                this.soilStr.setText("| Soil ");
+                this.soilStr = "| Soil ";
                 updateFilterString();
             }
             else {
                 this.soil = false;
-                this.soilStr.setText("");
+                this.soilStr = "";
                 this.updateFilterString();
             }
         });
@@ -417,12 +441,12 @@ public class SummerFilterMenu extends Stage{
         this.seedingBtn.setOnAction(e -> {
             if (this.seedingBtn.isSelected()){
                 this.seeding = true;
-                this.seedingStr.setText("| Seeding ");
+                this.seedingStr = "| Seeding ";
                 updateFilterString();
             }
             else {
                 this.seeding = false;
-                this.seedingStr.setText("");
+                this.seedingStr = "";
                 this.updateFilterString();
             }
         });
@@ -432,58 +456,58 @@ public class SummerFilterMenu extends Stage{
     private void setServicesToFalse(){
         this.lawn = false;
         this.lawnBtn.setSelected(false);
-        this.lawnStr.setText("");
+        this.lawnStr = "";
                 
         this.spring = false;
         this.springBtn.setSelected(false);
-        this.springStr.setText("");
+        this.springStr = "";
                 
         this.fall = false;
         this.fallBtn.setSelected(false);
-        this.fallStr.setText("");
+        this.fallStr = "";
                 
         this.weedTreatment = false;
         this.weedTreatmentBtn.setSelected(false);
-        this.weedTreatmentStr.setText("");
+        this.weedTreatmentStr = "";
                 
         this.aerationSpring = false;
         this.aerationSpringBtn.setSelected(false);
-        this.aerationSpringStr.setText("");
+        this.aerationSpringStr = "";
                 
         this.spider = false;
         this.spiderBtn.setSelected(false);
-        this.spiderStr.setText("");
+        this.spiderStr = "";
                 
         this.weeding = false;
         this.weedingBtn.setSelected(false);
-        this.weedingStr.setText("");
+        this.weedingStr = "";
                 
         this.hedges = false;
         this.hedgesBtn.setSelected(false);
-        this.hedgesStr.setText("");
+        this.hedgesStr = "";
                 
         this.fertilizer = false;
         this.fertilizerBtn.setSelected(false);
-        this.fertilizerStr.setText("");
+        this.fertilizerStr = "";
                 
         this.worms = false;
         this.wormsBtn.setSelected(false);
-        this.wormsStr.setText("");
+        this.wormsStr = "";
                 
         this.soil = false;
         this.soilBtn.setSelected(false);
-        this.soilStr.setText("");
+        this.soilStr = "";
                 
         this.aerationFall = false;
         this.aerationFallBtn.setSelected(false);
-        this.aerationFallStr.setText("");
+        this.aerationFallStr = "";
                 
         this.seeding = false;
         this.seedingBtn.setSelected(false);
-        this.seedingStr.setText("");
+        this.seedingStr = "";
     }
     
-    private void setButtons(boolean[] serviceList){
+    private void setStatusButtonAction(boolean[] serviceList){
         switch (this.status){
             case 0: {//All clients selected
                 this.allClientsBtn.setSelected(true);
@@ -496,7 +520,7 @@ public class SummerFilterMenu extends Stage{
                 for (int i = 0, j = 3; i < serviceList.length; i++, j++){
                     if (serviceList[i]){
                         this.btnList[j].setSelected(true);
-                        this.stringList[i].setText("| " + this.btnList[j].getText() + " ");
+                        this.stringList[i] = "| " + this.btnList[j].getText() + " ";
                     }
                 }
             }break;
@@ -510,7 +534,7 @@ public class SummerFilterMenu extends Stage{
                 for (int i = 0, j = 3; i < serviceList.length; i++, j++){
                     if (serviceList[i]){
                         this.btnList[j].setSelected(true);
-                        this.stringList[i].setText("| " + this.btnList[j].getText() + " ");
+                        this.stringList[i] = "| " + this.btnList[j].getText() + " ";
                     }
                 }
             }break;
@@ -524,7 +548,7 @@ public class SummerFilterMenu extends Stage{
                 for (int i = 0, j = 3; i < serviceList.length; i++, j++){
                     if (serviceList[i]){
                         this.btnList[j].setSelected(true);
-                        this.stringList[i].setText("| " + this.btnList[j].getText() + " ");
+                        this.stringList[i] = "| " + this.btnList[j].getText() + " ";
                     }
                 }
             }break;
@@ -532,10 +556,10 @@ public class SummerFilterMenu extends Stage{
     }
     
     private void updateFilterString(){
-        this.filterString.setText(this.statusString + this.lawnStr.getText() + this.springStr.getText() + this.fallStr.getText() 
-                + this.weedTreatmentStr.getText() + this.aerationSpringStr.getText() + this.aerationFallStr.getText() + this.spiderStr.getText() 
-                + this.weedingStr.getText() + this.hedgesStr.getText() + this.fertilizerStr.getText() + this.wormsStr.getText() 
-                + this.soilStr.getText() + this.seedingStr.getText());
+        this.filterString.setText(this.statusString + this.lawnStr + this.springStr + this.fallStr 
+                + this.weedTreatmentStr + this.aerationSpringStr + this.aerationFallStr + this.spiderStr 
+                + this.weedingStr + this.hedgesStr + this.fertilizerStr + this.wormsStr 
+                + this.soilStr + this.seedingStr);
     }
     
     private void setQuery(){
@@ -596,6 +620,9 @@ public class SummerFilterMenu extends Stage{
         System.out.println(query);
     }
     
+    /**
+     * Updates the observable list by querying database with selected filter parameters
+     */
     public void filterList(){
         try {
             
@@ -615,48 +642,122 @@ public class SummerFilterMenu extends Stage{
         }
     }
     
+    /**
+     * Return the status selected
+     * @return
+     */
     public int getStatus(){
         return this.status;
     }
+
+    /**
+     * Return the lawn value
+     * @return
+     */
     public boolean getLawn(){
         return this.lawn;
     }
+
+    /**
+     * Return the spring value
+     * @return
+     */
     public boolean getSpring(){
         return this.spring;
     }
+
+    /**
+     * Return the fall value
+     * @return
+     */
     public boolean getFall(){
         return this.fall;
     }
+
+    /**
+     * Return the weed treatment value
+     * @return
+     */
     public boolean getWeedTreatment(){
         return this.weedTreatment;
     }
+
+    /**
+     * Return the aeration spring value
+     * @return
+     */
     public boolean getAerationSpring(){
         return this.aerationSpring;
     }
+
+    /**
+     * Return the aeration fall value
+     * @return
+     */
     public boolean getAerationFall(){
         return this.aerationFall;
     }
+
+    /**
+     * Return the spider value
+     * @return
+     */
     public boolean getSpider(){
         return this.spider;
     }
+
+    /**
+     * Return the weeding value
+     * @return
+     */
     public boolean getWeeding(){
         return this.weeding;
     }
+
+    /**
+     * Return the hedges value
+     * @return
+     */
     public boolean getHedges(){
         return this.hedges;
     }
+
+    /**
+     * Return the fertilizer value
+     * @return
+     */
     public boolean getFertilizer(){
         return this.fertilizer;
     }
+
+    /**
+     * Return the worms value
+     * @return
+     */
     public boolean getWorms(){
         return this.worms;
     }
+
+    /**
+     * Return the soil value
+     * @return
+     */
     public boolean getSoil(){
         return this.soil;
     }
+
+    /**
+     * Return the seeding value
+     * @return
+     */
     public boolean getSeeding(){
         return this.seeding;
     }
+
+    /**
+     * Return the save button
+     * @return
+     */
     public Button getSaveBtn(){
         return this.saveBtn;
     }

@@ -26,53 +26,68 @@ import javafx.scene.text.Text;
  */
 public class LoginPage extends GridPane{
     
-    private Connection conn;
-    private Main main;
+    private Connection conn; //Connection to the database
+    private Main main; //pointer to the main class for the two public methods
     
     private Text title1 = new Text("Go Pro Paysagement");
     private Text subtitle1 = new Text("Client Manager");
     
     private Text promptSeasonYearText = new Text("Choose season and year:");
     
-    private ComboBox<String> seasonPrompt = new ComboBox<>();
-    private ComboBox<String> yearPrompt = new ComboBox<>();
+    private ComboBox<String> seasonPrompt = new ComboBox<>();//combo box for the seasons
+    private ComboBox<String> yearPrompt = new ComboBox<>();//combo box for the years
     
-    private Button enterBtn = new Button("Enter");
+    private Button enterBtn = new Button("Enter");//enter button when season and year have been chosen
     
-    private int yearSelected;
-    private String seasonSelected;
-    private String seasonID;
+    private int yearSelected;//year selected by user
+    private String seasonSelected;//season selected by user
+    private String seasonID;//seasonId from the season and year
     
-    public LoginPage(){
-        
-    }
-    
+    /**
+     * Main constructor
+     * @param conn
+     * @param main
+     */
     public LoginPage(Connection conn, Main main){
         this.conn = conn;
         this.main = main;
         
         fillComboBox();
         setUpPage();
-        setBtnAction();
+        setButtonAction();
     }
     
     /***********************************
      *      SET-UP METHODS FOR CLASS
      ***********************************/
     
-    private void setBtnAction(){
+    //set the action of every button in the pane
+    private void setButtonAction(){
+        /*
+        ENTER button:
+        When pressed, the year selected and season selected is recorded into the attributes of the class
+        The seasonId is then created using the two attributes, and passed as a parameter for the
+        switchToClientFromLogin() method
+        */
         this.enterBtn.setOnAction(e -> {
+            //Record inputs selected
             this.yearSelected = Integer.parseInt(this.yearPrompt.getSelectionModel().getSelectedItem());
             this.seasonSelected = this.seasonPrompt.getSelectionModel().getSelectedItem();
+            
+            //Create seasonId
             switch(this.seasonSelected){
                 case "Winter": this.seasonID = "W" + this.yearSelected;break;
                 case "Summer": this.seasonID = "S" + this.yearSelected;break;
                 default: System.out.println("ERROR");
             }
+            
+            //Switch to the main menu
             this.main.switchToClientFromLogin(this.seasonID);
         });
         
     }
+   
+    //Set up the page layout
     private void setUpPage(){
         this.add(title1, 1, 0);
         this.add(subtitle1, 1, 1);
@@ -103,6 +118,8 @@ public class LoginPage extends GridPane{
         enterBtn.setFont(Font.font("Rockwell", 30));
         
     }
+    
+    //Fill the combo boxes used to hold the options season and year
     private void fillComboBox(){
         
         for (int i = 2018; i < 2026; i++){
@@ -119,19 +136,26 @@ public class LoginPage extends GridPane{
     }
     
     
-    /*****************************************
-     *          GET METHODS FOR CLASS
-     *****************************************/
-    
-    
+    /**
+     * Returns the year selected by user
+     * @return 
+     */
     public int getYearSelected(){
         return this.yearSelected;
     }
-    
+
+    /**
+     * Returns the season selected by user
+     * @return
+     */
     public String getSeasonSelected(){
         return this.seasonSelected;
     }
-    
+
+    /**
+     * Returns the seasonId constructed from the season and year selected
+     * @return
+     */
     public String getSeasonID(){
         return this.seasonID;
     }

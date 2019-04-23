@@ -335,7 +335,6 @@ public class SummerInformationMenu extends Stage{
         this.bottomPane.setSpacing(5);
         
         this.bottomPane.getChildren().addAll(this.servicesBtn, this.paymentBtn, this.saveBtn);
-        //this.servicesBtn.setDisable(true);
         
         this.topPane.setPadding(this.insets);
         this.topPane.setAlignment(Pos.CENTER);
