@@ -20,9 +20,9 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
     
-    private final String url = "jdbc:postgresql://postgresql-client-manager.cgxqhlrfm5v4.us-east-2.rds.amazonaws.com/clientmanager";
-    private final String user = "alexanedubo";
-    private final String password = "Charlot123";
+    private final String url = "jdbc:postgresql://clientmanager.cpnxyhp5tfh2.us-east-2.rds.amazonaws.com/client_manager";
+    private final String user = "purplesmurf";
+    private final String password = "Linken14";
     
     private Connection conn = null;
     

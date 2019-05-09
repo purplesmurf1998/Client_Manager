@@ -37,24 +37,24 @@ import javafx.stage.Stage;
  */
 public class SummerPaymentMenu extends Stage{
     
-    private Connection conn;
-    private String seasonId;
+    private Connection conn;//connection to database
+    private String seasonId;//seasonId for the session
     
     private Scene scene;
     private BorderPane pane = new BorderPane();
-    
     private VBox leftPane = new VBox();
     private StackPane centerPane = new StackPane();
     
-    private final ToggleButton allBtn = new ToggleButton("All");
-    private final ToggleButton creditBtn = new ToggleButton("Credit");
-    private final ToggleButton checkBtn = new ToggleButton("Check");
-    private final ToggleButton interactBtn = new ToggleButton("Interact");
-    private final ToggleButton otherBtn = new ToggleButton("Other");
+    //PAYMENT METHOD BUTTONS
+    private final ToggleButton allBtn = new ToggleButton("All");//button for displaying all clients
+    private final ToggleButton creditBtn = new ToggleButton("Credit");//button for displaying credit paying clients
+    private final ToggleButton checkBtn = new ToggleButton("Check");//button for displaying check paying clients
+    private final ToggleButton interactBtn = new ToggleButton("Interact");//button for displaying interact paying clients
+    private final ToggleButton otherBtn = new ToggleButton("Other");//button for displaying misc playing clients
     
-    private final ToggleGroup methodGroup = new ToggleGroup();
+    private final ToggleGroup methodGroup = new ToggleGroup();//toggle group for payment method buttons
     
-    private Button statusBtn = new Button("All");
+    private Button statusBtn = new Button("All");//button for displaying clients according to the status selected
     private int status = 0;//0 = all, 1 = residential, 2 = commercial
     private int method = 0;//0 = all, 1 = check, 2 = credit, 3 = interact, 4 = other
     
@@ -63,11 +63,12 @@ public class SummerPaymentMenu extends Stage{
     private final Text methodLbl = new Text("Method");
     private final Text statusLbl = new Text("Status");
     
-    private final ObservableList<Payment> clientList = FXCollections.observableArrayList();
-    private final TableView<Payment> table = new TableView<>();
+    private final ObservableList<Payment> clientList = FXCollections.observableArrayList();//payment tableview
+    private final TableView<Payment> table = new TableView<>();//list containing the payment information of the clients
     
     private final Insets insets = new Insets(5, 5, 5, 5);
     
+    //TOTALS FOR EACH MONTH
     private double marTotal = 0;
     private double aprTotal = 0;
     private double mayTotal = 0;
@@ -78,6 +79,7 @@ public class SummerPaymentMenu extends Stage{
     private double octTotal = 0;
     private double total = 0;
     
+    //SUBTOTALS FOR EACH MONTH
     private double marSubTotal = 0;
     private double aprSubTotal = 0;
     private double maySubTotal = 0;
@@ -114,6 +116,7 @@ public class SummerPaymentMenu extends Stage{
         
     }
     
+    //sets up the left pane with the filter options
     private void setUpLeftPane(){
         
         this.leftPane.setPadding(insets);
@@ -145,6 +148,11 @@ public class SummerPaymentMenu extends Stage{
         this.interactBtn.setToggleGroup(this.methodGroup);
         this.otherBtn.setToggleGroup(this.methodGroup);
         
+        setButtonAction();
+        
+    }
+    
+    private void setButtonAction(){
         this.allBtn.setOnAction(e -> {
             if (!this.allBtn.isSelected())
                 this.allBtn.setSelected(true);
@@ -213,7 +221,6 @@ public class SummerPaymentMenu extends Stage{
                 }break;
             }
         });
-        
     }
     
     private void setUpCenterPane(){
@@ -221,8 +228,6 @@ public class SummerPaymentMenu extends Stage{
         
         this.centerPane.setAlignment(Pos.CENTER);
         this.centerPane.setPadding(this.insets);
-        
-        
         
         setUpTable();
     }
