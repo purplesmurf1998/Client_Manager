@@ -10,9 +10,6 @@
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
     <jar href="lib/postgresql-42.2.5.jar" size="825943" download="eager" />
   </resources>
-  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="GoProClientManager" >
-    <param name="requiredFXVersion" value="8.0+"/>
-  </applet-desc>
   <jfx:javafx-desc  width="800" height="600" main-class="Application.Main"  name="GoProClientManager" />
   <update check="always"/>
 </jnlp>
