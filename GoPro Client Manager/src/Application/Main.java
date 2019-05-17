@@ -69,7 +69,7 @@ public class Main extends Application {
     private void connectDB(){
         try {
             this.local_connection = DriverManager.getConnection(local_url, local_user, local_password);
-            System.out.println("Connected to the PostgreSQL server successfully.");
+            System.out.println("Is this even doing anything?");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
