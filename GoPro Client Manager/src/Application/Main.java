@@ -28,7 +28,7 @@ public class Main extends Application {
     private final String local_user = "alexanedubois";
     private final String local_password = "aloha";
     
-    private final String amazon_url = "clientmanager.cpnxyhp5tfh2.us-east-2.rds.amazonaws.com/client_manager";
+    private final String amazon_url = "jdbc:postgresql://clientmanager.cpnxyhp5tfh2.us-east-2.rds.amazonaws.com/client_manager";
     private final String amazon_user = "purplesmurf";
     private final String amazon_password = "Linken14";
     
