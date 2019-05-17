@@ -46,9 +46,7 @@ public class Main extends Application {
         
         
         connectDB();
-        System.out.println("Checking for backup");
         if (checkForBackup()){
-            System.out.println("Check returned true, backup database");
             backupDatabase();
         }
         
@@ -186,6 +184,9 @@ public class Main extends Application {
             System.out.println("Copying complete.");
             
             local_statement.executeUpdate("update backup_timestamp set last_backup = current_timestamp");
+            
+            this.amazon_connection.close();
+            this.amazon_connection = null;
             
         }catch (SQLException ex){
             ex.printStackTrace();
