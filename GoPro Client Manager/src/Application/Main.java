@@ -223,6 +223,7 @@ public class Main extends Application {
             return true;
             
         }catch (SQLException ex){
+            System.out.println("Something went wrong in try catch");
             ex.printStackTrace();
         }
         return false;
