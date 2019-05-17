@@ -9,6 +9,7 @@ import GUIs.GoProMenu;
 import GUIs.LoginPage;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -90,29 +91,27 @@ public class Main extends Application {
             amazon_statement.close();
             
             Statement local_statement = this.local_connection.createStatement();
-            Statement st_2; 
+            PreparedStatement st_2; 
             ResultSet rs;
             String query = "SELECT * FROM client_information";
             
-            String update = "";
             //"INSERT INTO client_information values (?, ?, ?, ?, ?, ?, ?, ?)"
             
             rs = local_statement.executeQuery(query);
             System.out.println("Copying client_information records...");
             while (rs.next()){
-                st_2 = this.amazon_connection.createStatement();
+                st_2 = this.amazon_connection.prepareStatement("INSERT INTO client_information values (?, ?, ?, ?, ?, ?, ?, ?)");
                 
-                update = "INSERT INTO client_information values ("
-                        + rs.getInt(1) + ", '"
-                        + rs.getString(2) + "', '"
-                        + rs.getString(3) + "', '"
-                        + rs.getString(4) + "', '"
-                        + rs.getString(5) + "', '"
-                        + rs.getString(6) + "', "
-                        + rs.getInt(7) + ", "
-                        + rs.getInt(8) + ")";
+                st_2.setInt(1, rs.getInt(1));
+                st_2.setString(2, rs.getString(2));
+                st_2.setString(3, rs.getString(3));
+                st_2.setString(4, rs.getString(4));
+                st_2.setString(5, rs.getString(5));
+                st_2.setString(6, rs.getString(6));
+                st_2.setInt(7, rs.getInt(7));
+                st_2.setInt(8, rs.getInt(8));
                 
-                st_2.executeUpdate(update);
+                st_2.executeUpdate();
             }
             
             rs.close();
@@ -126,26 +125,25 @@ public class Main extends Application {
             rs = local_statement.executeQuery(query);
             System.out.println("Copying summer_payment records...");
             while (rs.next()){
-                st_2 = this.amazon_connection.createStatement();
+                st_2 = this.amazon_connection.prepareStatement("INSERT INTO summer_payment values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 
-                update = "INSERT INTO summer_payment VALUES ("
-                        + rs.getInt(1) + ", '"
-                        + rs.getString(2) + "', "
-                        + rs.getDouble(3) + ", "
-                        + rs.getInt(4) + ", "
-                        + rs.getInt(5) + ", "
-                        + rs.getInt(6) + ", "
-                        + rs.getInt(7) + ", "
-                        + rs.getInt(8) + ", "
-                        + rs.getInt(9) + ", "
-                        + rs.getInt(10) + ", "
-                        + rs.getInt(11) + ", "
-                        + rs.getInt(12) + ", "
-                        + rs.getInt(13) + ", '"
-                        + rs.getString(14) + "', "
-                        + rs.getDouble(15) + ")";
+                st_2.setInt(1, rs.getInt(1));
+                st_2.setString(2, rs.getString(2));
+                st_2.setDouble(3, rs.getDouble(3));
+                st_2.setInt(4, rs.getInt(4));
+                st_2.setInt(5, rs.getInt(5));
+                st_2.setInt(6, rs.getInt(6));
+                st_2.setInt(7, rs.getInt(7));
+                st_2.setInt(8, rs.getInt(8));
+                st_2.setInt(9, rs.getInt(9));
+                st_2.setInt(10, rs.getInt(10));
+                st_2.setInt(11, rs.getInt(11));
+                st_2.setInt(12, rs.getInt(12));
+                st_2.setInt(13, rs.getInt(13));
+                st_2.setString(14, rs.getString(14));
+                st_2.setDouble(15, rs.getDouble(15));
                 
-                st_2.executeUpdate(update);
+                st_2.executeUpdate();
             }
             
             rs.close();
@@ -159,30 +157,29 @@ public class Main extends Application {
             rs = local_statement.executeQuery(query);
             System.out.println("Copying summer_services records...");
             while (rs.next()){
-                st_2 = this.amazon_connection.createStatement();
+                st_2 = this.amazon_connection.prepareStatement("INSERT INTO summer_services values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 
-                update = "INSERT INTO summer_services VALUES ("
-                        + rs.getInt(1) + ", '"
-                        + rs.getString(2) + "', "
-                        + rs.getDouble(3) + ", "
-                        + rs.getDouble(4) + ", "
-                        + rs.getDouble(5) + ", "
-                        + rs.getDouble(6) + ", "
-                        + rs.getDouble(7) + ", "
-                        + rs.getDouble(8) + ", "
-                        + rs.getDouble(9) + ", "
-                        + rs.getDouble(10) + ", "
-                        + rs.getDouble(11) + ", "
-                        + rs.getDouble(12) + ", "
-                        + rs.getDouble(13) + ", "
-                        + rs.getDouble(14) + ", "
-                        + rs.getDouble(15) + ", "
-                        + rs.getDouble(16) + ", '"
-                        + rs.getString(17) + "', '"
-                        + rs.getString(18) + "', "
-                        + rs.getDate(19) + ")";
+                st_2.setInt(1, rs.getInt(1));
+                st_2.setString(2, rs.getString(2));
+                st_2.setDouble(3, rs.getDouble(3));
+                st_2.setDouble(4, rs.getDouble(4));
+                st_2.setDouble(5, rs.getDouble(5));
+                st_2.setDouble(6, rs.getDouble(6));
+                st_2.setDouble(7, rs.getDouble(7));
+                st_2.setDouble(8, rs.getDouble(8));
+                st_2.setDouble(9, rs.getDouble(9));
+                st_2.setDouble(10, rs.getDouble(10));
+                st_2.setDouble(11, rs.getDouble(11));
+                st_2.setDouble(12, rs.getDouble(12));
+                st_2.setDouble(13, rs.getDouble(13));
+                st_2.setDouble(14, rs.getDouble(14));
+                st_2.setDouble(15, rs.getDouble(15));
+                st_2.setDouble(16, rs.getDouble(16));
+                st_2.setString(17, rs.getString(17));
+                st_2.setString(18, rs.getString(18));
+                st_2.setDate(19, rs.getDate(19));
                 
-                st_2.executeUpdate(update);
+                st_2.executeUpdate();
             }
             
             rs.close();
