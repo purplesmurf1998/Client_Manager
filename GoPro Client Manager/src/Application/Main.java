@@ -45,8 +45,11 @@ public class Main extends Application {
         
         
         connectDB();
-        if (checkForBackup())
+        System.out.println("Checking for backup");
+        if (checkForBackup()){
+            System.out.println("Check returned true, backup database");
             backupDatabase();
+        }
         
         loginPage = new LoginPage(local_connection, this);
         
@@ -226,6 +229,7 @@ public class Main extends Application {
             System.out.println("Something went wrong in try catch");
             ex.printStackTrace();
         }
+        System.out.println("returning false for some reason");
         return false;
     }
     /**
