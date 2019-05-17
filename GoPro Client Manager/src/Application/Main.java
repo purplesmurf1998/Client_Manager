@@ -49,7 +49,7 @@ public class Main extends Application {
         System.out.println("Checking for backup");
         if (checkForBackup()){
             System.out.println("Check returned true, backup database");
-            backupDatabase();
+            //backupDatabase();
         }
         
         loginPage = new LoginPage(local_connection, this);
@@ -214,13 +214,12 @@ public class Main extends Application {
             calendar.setTime(date_backup);
             week_backup = calendar.get(Calendar.WEEK_OF_YEAR);
             System.out.println();
-            /*
+            
             if (week_now != week_backup)
                 return true;
             else
                 return false;
-            */
-            return true;
+            
             
         }catch (SQLException ex){
             System.out.println("Something went wrong in try catch");
