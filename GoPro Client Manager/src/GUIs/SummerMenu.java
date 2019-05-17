@@ -143,7 +143,7 @@ public class SummerMenu extends BorderPane{
     private MenuItem deleteClientBtn = new MenuItem("Delete");//delete client option button
     
     //Alert for any errors
-    private Alert fileExistsAlert = new Alert(AlertType.CONFIRMATION);//alert popup for any user errors caught
+    private Alert menuAlert = new Alert(AlertType.CONFIRMATION);//alert popup for any user errors caught
     
     /**
      * Main constructor
@@ -417,16 +417,37 @@ public class SummerMenu extends BorderPane{
     private void deleteClient(Client client) throws SQLException{
         Statement st = this.conn.createStatement();
         
-        String deleteString = "delete from summer_services where seasonid = '" + client.getId() + "" + this.seasonId + "'";
+        this.menuAlert.setTitle("Deleting Client");
+        this.menuAlert.setHeaderText("You are about to delete a client, continue?");
+        this.menuAlert.setContentText("By deleting this client, you are removing it from every list.\n"
+                + "This includes past seasons, summer and winter. Are you sure to continue?");
+        Optional<ButtonType> button = this.menuAlert.showAndWait();
         
-        st.executeUpdate(deleteString);
+        if (button.get() == ButtonType.OK){
         
-        deleteString = "delete from summer_payment where id = " + client.getId() + " and season = '" + this.seasonId + "'";
+            String deleteString = "delete from summer_services where id = " + client.getId();
         
-        st.executeUpdate(deleteString);
+            st.executeUpdate(deleteString);
         
-        st.close();
-        this.refreshTable();
+            deleteString = "delete from summer_payment where id = " + client.getId();
+        
+            st.executeUpdate(deleteString);
+            
+            deleteString = "delete from winter_services where id = " + client.getId();
+            
+            st.executeUpdate(deleteString);
+            
+            deleteString = "delete from winter_payment where id = " + client.getId();
+            
+            st.executeUpdate(deleteString);
+        
+            deleteString = "delete from client_information where id = " + client.getId();
+        
+            st.executeUpdate(deleteString);
+        
+            st.close();
+            this.refreshTable();
+        }
     }
     
     //set up the action of every button on the pane
@@ -539,11 +560,11 @@ public class SummerMenu extends BorderPane{
                         File file = new File(userHomeFolder, fileName + ".txt");
                         //check if a file with the same name already exists 
                         if (file.exists()){
-                            this.fileExistsAlert.setTitle("File Already Exists");
-                            this.fileExistsAlert.setHeaderText("The file " + file.getName() + " already exists on the desktop");
-                            this.fileExistsAlert.setContentText("Pressing 'Ok' will overwrite the current text files saved on the computer.\n"
+                            this.menuAlert.setTitle("File Already Exists");
+                            this.menuAlert.setHeaderText("The file " + file.getName() + " already exists on the desktop");
+                            this.menuAlert.setContentText("Pressing 'Ok' will overwrite the current text files saved on the computer.\n"
                                     + "If you do not wish for this to happen, press Cancel and enter a different name.");
-                            Optional<ButtonType> button = this.fileExistsAlert.showAndWait();
+                            Optional<ButtonType> button = this.menuAlert.showAndWait();
                             
                             //If the user presses the ok button, the existing file will be overwritten with the new information
                             if (button.get() == ButtonType.OK){

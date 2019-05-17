@@ -9,7 +9,11 @@ import GUIs.GoProMenu;
 import GUIs.LoginPage;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Calendar;
+import java.util.Date;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -20,11 +24,16 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
     
-    private final String url = "jdbc:postgresql://localhost/clientmanager";
-    private final String user = "alexanedubois";
-    private final String password = "aloha";
+    private final String local_url = "jdbc:postgresql://localhost/clientmanager";
+    private final String local_user = "alexanedubois";
+    private final String local_password = "aloha";
     
-    private Connection conn = null;
+    private final String amazon_url = "clientmanager.cpnxyhp5tfh2.us-east-2.rds.amazonaws.com/client_manager";
+    private final String amazon_user = "purplesmurf";
+    private final String amazon_password = "Linken14";
+    
+    private Connection local_connection = null;
+    private Connection amazon_connection = null;
     
     private LoginPage loginPage;
     private GoProMenu mainMenu;
@@ -36,8 +45,10 @@ public class Main extends Application {
         
         
         connectDB();
+        if (checkForBackup())
+            backupDatabase();
         
-        loginPage = new LoginPage(conn, this);
+        loginPage = new LoginPage(local_connection, this);
         
         setUpScene(primaryStage);
         primaryStage.show();
@@ -54,11 +65,167 @@ public class Main extends Application {
     //Connect to the database
     private void connectDB(){
         try {
-            this.conn = DriverManager.getConnection(url, user, password);
+            this.local_connection = DriverManager.getConnection(local_url, local_user, local_password);
             System.out.println("Connected to the PostgreSQL server successfully.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+    private void backupDatabase(){
+        
+        try {
+            
+            this.amazon_connection = DriverManager.getConnection(amazon_url, amazon_user, amazon_password);
+            System.out.println("Connected to backup database");
+            
+            //Clear backupdatabase
+            Statement amazon_statement = this.amazon_connection.createStatement();
+            
+            String clear = "truncate client_information cascade";
+            amazon_statement.executeUpdate(clear);
+            
+            amazon_statement.close();
+            
+            Statement local_statement = this.local_connection.createStatement();
+            Statement st_2; 
+            ResultSet rs;
+            String query = "SELECT * FROM client_information";
+            
+            String update = "";
+            //"INSERT INTO client_information values (?, ?, ?, ?, ?, ?, ?, ?)"
+            
+            rs = local_statement.executeQuery(query);
+            System.out.println("Copying client_information records...");
+            while (rs.next()){
+                st_2 = this.amazon_connection.createStatement();
+                
+                update = "INSERT INTO client_information values ("
+                        + rs.getInt(1) + ", '"
+                        + rs.getString(2) + "', '"
+                        + rs.getString(3) + "', '"
+                        + rs.getString(4) + "', '"
+                        + rs.getString(5) + "', '"
+                        + rs.getString(6) + "', "
+                        + rs.getInt(7) + ", "
+                        + rs.getInt(8) + ")";
+                
+                st_2.executeUpdate(update);
+            }
+            
+            rs.close();
+            System.out.println("Copying completed.");
+            
+            
+            query = "SELECT * FROM summer_payment";
+            
+            //"INSERT INTO summer_payment values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            
+            rs = local_statement.executeQuery(query);
+            System.out.println("Copying summer_payment records...");
+            while (rs.next()){
+                st_2 = this.amazon_connection.createStatement();
+                
+                update = "INSERT INTO summer_payment VALUES ("
+                        + rs.getInt(1) + ", '"
+                        + rs.getString(2) + "', "
+                        + rs.getDouble(3) + ", "
+                        + rs.getInt(4) + ", "
+                        + rs.getInt(5) + ", "
+                        + rs.getInt(6) + ", "
+                        + rs.getInt(7) + ", "
+                        + rs.getInt(8) + ", "
+                        + rs.getInt(9) + ", "
+                        + rs.getInt(10) + ", "
+                        + rs.getInt(11) + ", "
+                        + rs.getInt(12) + ", "
+                        + rs.getInt(13) + ", '"
+                        + rs.getString(14) + "', "
+                        + rs.getDouble(15) + ")";
+                
+                st_2.executeUpdate(update);
+            }
+            
+            rs.close();
+            System.out.println("Copying complete.");
+            
+            
+            query = "SELECT * FROM summer_services";
+            
+            //"INSERT INTO summer_services values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            
+            rs = local_statement.executeQuery(query);
+            System.out.println("Copying summer_services records...");
+            while (rs.next()){
+                st_2 = this.amazon_connection.createStatement();
+                
+                update = "INSERT INTO summer_services VALUES ("
+                        + rs.getInt(1) + ", '"
+                        + rs.getString(2) + "', "
+                        + rs.getDouble(3) + ", "
+                        + rs.getDouble(4) + ", "
+                        + rs.getDouble(5) + ", "
+                        + rs.getDouble(6) + ", "
+                        + rs.getDouble(7) + ", "
+                        + rs.getDouble(8) + ", "
+                        + rs.getDouble(9) + ", "
+                        + rs.getDouble(10) + ", "
+                        + rs.getDouble(11) + ", "
+                        + rs.getDouble(12) + ", "
+                        + rs.getDouble(13) + ", "
+                        + rs.getDouble(14) + ", "
+                        + rs.getDouble(15) + ", "
+                        + rs.getDouble(16) + ", '"
+                        + rs.getString(17) + "', '"
+                        + rs.getString(18) + "', "
+                        + rs.getDate(19) + ")";
+                
+                st_2.executeUpdate(update);
+            }
+            
+            rs.close();
+            System.out.println("Copying complete.");
+            
+            local_statement.executeUpdate("update backup_timestamp set last_backup = current_timestamp");
+            
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        
+    }
+    private boolean checkForBackup(){
+        Calendar calendar = Calendar.getInstance();
+        Date date_now = new Date();
+        Date date_backup = null;
+        
+        calendar.setTime(date_now);
+        
+        int week_now = calendar.get(Calendar.WEEK_OF_YEAR);
+        int week_backup = week_now;
+        
+        try{
+            String query = "select last_backup from backup_timestamp";
+            Statement st = this.local_connection.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            
+            while (rs.next()){
+                date_backup = rs.getDate(1);
+            }
+            
+            calendar.setTime(date_backup);
+            week_backup = calendar.get(Calendar.WEEK_OF_YEAR);
+            System.out.println();
+            /*
+            if (week_now != week_backup)
+                return true;
+            else
+                return false;
+            */
+            return true;
+            
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return false;
     }
     /**
      * Switch back to the login page when the logout button is pressed
@@ -71,7 +238,7 @@ public class Main extends Application {
      * @param seasonId
      */
     public void switchToClientFromLogin(String seasonId){
-        mainMenu = new GoProMenu(conn, this);
+        mainMenu = new GoProMenu(local_connection, this);
         this.mainMenu.setSeasonId(seasonId);
         this.scene.setRoot(this.mainMenu);
     }
