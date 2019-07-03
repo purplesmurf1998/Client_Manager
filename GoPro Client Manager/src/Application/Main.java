@@ -46,6 +46,7 @@ public class Main extends Application {
         
         
         connectDB();
+        
         if (checkForBackup()){
             backupDatabase();
         }
@@ -67,8 +68,8 @@ public class Main extends Application {
     //Connect to the database
     private void connectDB(){
         try {
-            this.local_connection = DriverManager.getConnection(local_url, local_user, local_password);
-            System.out.println("Is this even doing anything?");
+            this.amazon_connection = DriverManager.getConnection(amazon_url, amazon_user, amazon_password);
+            System.out.println("Connection to Amazon AWS Server succesful.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -239,7 +240,7 @@ public class Main extends Application {
      * @param seasonId
      */
     public void switchToClientFromLogin(String seasonId){
-        mainMenu = new GoProMenu(local_connection, this);
+        mainMenu = new GoProMenu(amazon_connection, this);
         this.mainMenu.setSeasonId(seasonId);
         this.scene.setRoot(this.mainMenu);
     }

@@ -20,11 +20,13 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -44,6 +46,14 @@ public class SummerPaymentMenu extends Stage{
     private BorderPane pane = new BorderPane();
     private VBox leftPane = new VBox();
     private StackPane centerPane = new StackPane();
+    private HBox topPane = new HBox();
+    
+    //SEARCH FUNCTION VARIABLES
+    private final TextField searchBar = new TextField();
+    private final ToggleButton addressBtn = new ToggleButton("address");
+    private final ToggleButton nameBtn = new ToggleButton("name");
+    private final ToggleGroup searchGroup = new ToggleGroup();
+    private boolean searchValue = false;//false = address, true = name
     
     //PAYMENT METHOD BUTTONS
     private final ToggleButton allBtn = new ToggleButton("All");//button for displaying all clients
@@ -106,14 +116,101 @@ public class SummerPaymentMenu extends Stage{
         
         setUpLeftPane();
         setUpCenterPane();
+        setUpTopPane();
+        setSearchBar();
         
         pane.setLeft(this.leftPane);
         pane.setCenter(this.centerPane);
+        pane.setTop(this.topPane);
         
         scene = new Scene(pane, 1200, 700);
         this.setScene(scene);
         this.setTitle("Payment Tab for Summer " + this.seasonId.substring(1));
         
+    }
+    
+    private void setUpTopPane(){
+        this.topPane.setPadding(insets);
+        this.topPane.setSpacing(10);
+        this.topPane.setAlignment(Pos.CENTER_RIGHT);
+        
+        this.topPane.getChildren().addAll(this.addressBtn, this.nameBtn, this.searchBar);
+        
+        this.addressBtn.setToggleGroup(searchGroup);
+        this.nameBtn.setToggleGroup(searchGroup);
+        this.addressBtn.setSelected(true);
+        this.nameBtn.setSelected(false);
+        this.addressBtn.setFocusTraversable(false);
+        this.nameBtn.setFocusTraversable(false);
+        
+    }
+    
+    private void setSearchBar(){
+        this.searchBar.setOnKeyReleased(e -> {
+            if (!this.searchValue){//by address
+                try {
+                    resetQuery();
+                    
+                    Statement st = this.conn.createStatement();
+                    String search = this.searchBar.getText().toUpperCase();
+                    
+                    for (int i = 0; i < search.length(); i++){
+                        if (search.charAt(i) == '\''){
+                            search = search.substring(0, i) + "'" + search.substring(i, search.length());
+                            i++;
+                        }
+                    }
+                    
+                    this.query += "and client_information.address LIKE '" + search + "%' ";
+                    this.query += "order by client_information.door_number asc ";
+                    
+                    System.out.println(this.query);
+                    
+                    ResultSet rs = st.executeQuery(this.query);
+                    this.clientList.clear();
+                    while (rs.next()){
+                        this.clientList.add(new Payment(rs.getInt(14), rs.getString(1), rs.getString(2), rs.getInt(13), rs.getDouble(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getInt(11), rs.getInt(12), rs.getString(15)));
+                        
+                    }
+                    
+                    
+                }catch (SQLException ex){
+                    System.out.println(ex.getMessage());
+                }
+            }
+            else {//by name
+                try {
+                    resetQuery();
+                    
+                    Statement st = this.conn.createStatement();
+                    String search = this.searchBar.getText().toUpperCase();
+                    
+                    for (int i = 0; i < search.length(); i++){
+                        if (search.charAt(i) == '\''){
+                            search = search.substring(0, i) + "'" + search.substring(i, search.length());
+                            i++;
+                        }
+                    }
+                    
+                    this.query += "and client_information.name LIKE '" + search + "%' ";
+                    this.query += "order by client_information.door_number asc ";
+                    
+                    System.out.println(this.query);
+
+                    
+                    ResultSet rs = st.executeQuery(this.query);
+                    this.clientList.clear();
+                    while (rs.next()){
+                        this.clientList.add(new Payment(rs.getInt(14), rs.getString(1), rs.getString(2), rs.getInt(13), rs.getDouble(3), rs.getInt(4), rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getInt(8), rs.getInt(9), rs.getInt(10), rs.getInt(11), rs.getInt(12), rs.getString(15)));
+                        
+                    }
+                    
+                    
+                }catch (SQLException ex){
+                    System.out.println(ex.getMessage());
+                }
+            }
+        });
     }
     
     //sets up the left pane with the filter options
@@ -159,6 +256,8 @@ public class SummerPaymentMenu extends Stage{
             
             this.method = 0;
             
+            resetQuery();
+            this.searchBar.setText("");
             sortTable();
         });
         
@@ -168,6 +267,8 @@ public class SummerPaymentMenu extends Stage{
             
             this.method = 1;
             
+            resetQuery();
+            this.searchBar.setText("");
             sortTable();
             
         });
@@ -178,6 +279,8 @@ public class SummerPaymentMenu extends Stage{
             
             this.method = 2;
             
+            resetQuery();
+            this.searchBar.setText("");
             sortTable();
             
         });
@@ -188,6 +291,8 @@ public class SummerPaymentMenu extends Stage{
             
             this.method = 3;
             
+            resetQuery();
+            this.searchBar.setText("");
             sortTable();
             
         });
@@ -198,6 +303,8 @@ public class SummerPaymentMenu extends Stage{
             
             this.method = 4;
             
+            resetQuery();
+            this.searchBar.setText("");
             sortTable();
             
         });
@@ -207,19 +314,49 @@ public class SummerPaymentMenu extends Stage{
                 case 0: {
                     this.status = 1;
                     this.statusBtn.setText("Residential");
+                    resetQuery();
+                    this.searchBar.setText("");
                     sortTable();
                 }break;
                 case 1: {
                     this.status = 2;
                     this.statusBtn.setText("Commercial");
+                    resetQuery();
+                    this.searchBar.setText("");
                     sortTable();
                 }break;
                 case 2: {
                     this.status = 0;
                     this.statusBtn.setText("All");
+                    resetQuery();
+                    this.searchBar.setText("");
                     sortTable();
                 }break;
             }
+        });
+        
+        /*
+        SEARCH CLIENTS buttons:
+        each button simply sets the search value so that the search bar may search accordingly
+        */
+        this.addressBtn.setOnAction(e -> {
+            if (!this.addressBtn.isSelected()){
+                this.addressBtn.setSelected(true);
+                this.searchValue = false;
+            }
+            else
+                this.searchValue = false;
+            this.searchBar.setText("");
+        });
+        
+        this.nameBtn.setOnAction(e -> {
+            if (!this.nameBtn.isSelected()){
+                this.nameBtn.setSelected(true);
+                this.searchValue = true;
+            }
+            else
+                this.searchValue = true;
+            this.searchBar.setText("");
         });
     }
     
@@ -264,7 +401,7 @@ public class SummerPaymentMenu extends Stage{
             }break;
         }
         
-        this.query += "order by client_information.door_number asc";
+        //this.query += "order by client_information.door_number asc";
     }
     
     private void resetQuery(){
@@ -275,6 +412,8 @@ public class SummerPaymentMenu extends Stage{
                     + "summer_payment.method, client_information.id, summer_payment.comments "
                     + "from summer_payment inner join client_information "
                     + "on summer_payment.id = client_information.id and summer_payment.season = '" + this.seasonId + "' ";
+        
+        setQuery();
     }
     
     private void sortTable(){
